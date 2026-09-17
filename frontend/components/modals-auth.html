@@ -1,0 +1,163 @@
+<!-- =========================================================================
+     MODALES DE AUTENTICACIÓN Y REGISTRO POR ROL
+     ========================================================================= -->
+
+<!-- Modal 1: Portal Ingreso USUARIO -->
+<div class="modal-overlay" id="loginUserModal">
+  <div class="modal-card user-portal">
+    <div class="modal-header">
+      <div>
+        <div style="font-size: 0.72rem; color: var(--status-disponible); font-weight: 700; text-transform: uppercase;">Portal Comunidad</div>
+        <h3><i class="fas fa-user" style="color: var(--status-disponible);"></i> Ingreso de Usuario</h3>
+      </div>
+      <button class="btn-icon" onclick="window.hideModal('loginUserModal')"><i class="fas fa-times"></i></button>
+    </div>
+    <form id="loginUserForm">
+      <div class="modal-body">
+        <div class="portal-security-notice user">
+          <i class="fas fa-info-circle" style="font-size: 1.1rem; color: var(--status-disponible);"></i>
+          <div>
+            Acceso para consulta bibliográfica, solicitud de turno y uso de computadores en la Biblioteca 12 de Octubre.
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-top: 1rem;">
+          <label>Documento o Correo:</label>
+          <input type="text" id="loginUserDoc" placeholder="Número de documento o correo" required autocomplete="username">
+        </div>
+        <div class="form-group">
+          <label>Contraseña:</label>
+          <input type="password" id="loginUserPass" placeholder="Tu contraseña" required autocomplete="current-password">
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem;">
+          <span style="font-size: 0.8rem; color: var(--text-secondary);">¿Aún no te has registrado?</span>
+          <button type="button" class="btn btn-outline-primary btn-sm" onclick="window.hideModal('loginUserModal'); window.showModal('registerModal');">
+            Crear Cuenta
+          </button>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="window.hideModal('loginUserModal')">Cancelar</button>
+        <button type="submit" class="btn btn-success">
+          <i class="fas fa-sign-in-alt"></i> Entrar a Mi Panel
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+<!-- Modal 2: Portal Ingreso FUNCIONARIO -->
+<div class="modal-overlay" id="loginStaffModal">
+  <div class="modal-card staff-portal">
+    <div class="modal-header">
+      <div>
+        <div style="font-size: 0.72rem; color: var(--status-warning); font-weight: 700; text-transform: uppercase;">Personal Autorizado</div>
+        <h3><i class="fas fa-user-tie" style="color: var(--status-warning);"></i> Ingreso de Funcionario</h3>
+      </div>
+      <button class="btn-icon" onclick="window.hideModal('loginStaffModal')"><i class="fas fa-times"></i></button>
+    </div>
+    <form id="loginStaffForm">
+      <div class="modal-body">
+        <div class="portal-security-notice staff">
+          <i class="fas fa-shield-alt" style="font-size: 1.1rem; color: var(--status-warning);"></i>
+          <div>
+            Acceso exclusivo para el personal bibliotecario de sala. Este portal valida credenciales de funcionario.
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-top: 1rem;">
+          <label>Documento o Correo Institucional:</label>
+          <input type="text" id="loginStaffDoc" placeholder="Documento institucional" required autocomplete="username">
+        </div>
+        <div class="form-group">
+          <label>Contraseña:</label>
+          <input type="password" id="loginStaffPass" placeholder="Tu contraseña" required autocomplete="current-password">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="window.hideModal('loginStaffModal')">Cancelar</button>
+        <button type="submit" class="btn btn-warning">
+          <i class="fas fa-tasks"></i> Entrar a Sala de Control
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+<!-- Modal 3: Portal Ingreso SUPER ADMINISTRADOR -->
+<div class="modal-overlay" id="loginAdminModal">
+  <div class="modal-card admin-portal">
+    <div class="modal-header">
+      <div>
+        <div style="font-size: 0.72rem; color: #a78bfa; font-weight: 700; text-transform: uppercase;">Dirección General & Control Maestro</div>
+        <h3><i class="fas fa-shield-alt" style="color: #a78bfa;"></i> Consola Super Admin</h3>
+      </div>
+      <button class="btn-icon" onclick="window.hideModal('loginAdminModal')"><i class="fas fa-times"></i></button>
+    </div>
+    <form id="loginAdminForm">
+      <div class="modal-body">
+        <div class="portal-security-notice admin">
+          <i class="fas fa-lock" style="font-size: 1.1rem; color: #a78bfa;"></i>
+          <div>
+            <strong>Zona Restringida:</strong> Requiere privilegios de Super Administrador. Se auditarán todos los accesos al sistema.
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-top: 1rem;">
+          <label>Documento o Usuario Administrador:</label>
+          <input type="text" id="loginAdminDoc" placeholder="Identificador de Super Admin" required autocomplete="username">
+        </div>
+        <div class="form-group">
+          <label>Contraseña Maestra:</label>
+          <input type="password" id="loginAdminPass" placeholder="Contraseña de administrador" required autocomplete="current-password">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="window.hideModal('loginAdminModal')">Cancelar</button>
+        <button type="submit" class="btn btn-primary" style="background: linear-gradient(135deg, #8b5cf6, #6366f1); border-color: #8b5cf6;">
+          <i class="fas fa-key"></i> Acceder a Consola
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+<!-- Modal 4: Registro de Usuario Nuevo -->
+<div class="modal-overlay" id="registerModal">
+  <div class="modal-card user-portal">
+    <div class="modal-header">
+      <h3><i class="fas fa-user-plus" style="color: var(--status-disponible);"></i> Registrarse en BiblioTiempoDoce</h3>
+      <button class="btn-icon" onclick="window.hideModal('registerModal')"><i class="fas fa-times"></i></button>
+    </div>
+    <form id="registerForm">
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Nombre Completo:</label>
+          <input type="text" id="regNombre" placeholder="Tu nombre y apellidos" required>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Documento de Identidad:</label>
+            <input type="text" id="regDocumento" placeholder="C.C. o T.I." required>
+          </div>
+          <div class="form-group">
+            <label>Correo Electrónico:</label>
+            <input type="email" id="regCorreo" placeholder="correo@ejemplo.com" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Contraseña:</label>
+          <input type="password" id="regPassword" placeholder="Mínimo 6 caracteres" minlength="6" required>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="window.hideModal('registerModal')">Cancelar</button>
+        <button type="submit" class="btn btn-success">Crear Mi Cuenta</button>
+      </div>
+    </form>
+  </div>
+</div>

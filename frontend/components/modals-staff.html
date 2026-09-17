@@ -1,0 +1,59 @@
+<!-- =========================================================================
+     MODALES DE OPERACIÓN Y FUNCIONARIOS DE SALA
+     ========================================================================= -->
+
+<!-- Modal 5: Asignar Sesión Manual en PC (Funcionario) -->
+<div class="modal-overlay" id="staffAssignModal">
+  <div class="modal-card staff-portal">
+    <div class="modal-header">
+      <h3 id="staffAssignModalTitle">Asignar Sesión en Computador</h3>
+      <button class="btn-icon" onclick="window.hideModal('staffAssignModal')"><i class="fas fa-times"></i></button>
+    </div>
+    <form id="staffAssignSessionForm">
+      <input type="hidden" id="staffAssignPcId">
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Documento del Usuario:</label>
+          <input type="text" id="staffAssignUserDoc" placeholder="Documento del visitante" required>
+          <span style="font-size: 0.75rem; color: var(--text-muted);">Si el usuario no está registrado, se le creará un acceso temporal automáticamente.</span>
+        </div>
+        <div class="form-group">
+          <label>Tiempo de Uso Autorizado (minutos):</label>
+          <select id="staffAssignTime">
+            <option value="60" selected>60 minutos (Estándar)</option>
+            <option value="30">30 minutos (Rápido)</option>
+            <option value="90">90 minutos (Investigación)</option>
+            <option value="120">120 minutos (Especial)</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="window.hideModal('staffAssignModal')">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Iniciar Sesión Ahora</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+<!-- Modal 6: Agregar Visitante a Fila de Espera (Funcionario) -->
+<div class="modal-overlay" id="staffAddQueueModal">
+  <div class="modal-card staff-portal">
+    <div class="modal-header">
+      <h3>Agregar Visitante a Fila de Espera</h3>
+      <button class="btn-icon" onclick="window.hideModal('staffAddQueueModal')"><i class="fas fa-times"></i></button>
+    </div>
+    <form id="staffAddQueueForm">
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Documento de Identidad:</label>
+          <input type="text" id="staffAddQueueDoc" placeholder="Número de documento" required>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="window.hideModal('staffAddQueueModal')">Cancelar</button>
+        <button type="submit" class="btn btn-warning">Asignar Turno en Fila</button>
+      </div>
+    </form>
+  </div>
+</div>

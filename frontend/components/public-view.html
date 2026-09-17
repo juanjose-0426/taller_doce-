@@ -1,0 +1,291 @@
+<!-- -----------------------------------------------------------------------
+     VISTA 1: VISTA PÚBLICA (PORTALES DE INGRESO, INFORMACIÓN Y SALA EN VIVO)
+     ----------------------------------------------------------------------- -->
+
+<section id="publicView" class="view-section active">
+  <div class="hero-section">
+    
+    <!-- Banner Principal -->
+    <div class="hero-banner">
+      <span class="hero-badge">
+        <i class="fas fa-book-reader"></i> Sistema de Bibliotecas Públicas &bull; Comuna 6, Medellín
+      </span>
+      <h1 class="hero-title">
+        Gestión Tecnológica y Acceso Equitativo con <span class="gradient-text">BiblioTiempoDoce</span>
+      </h1>
+      <p class="hero-subtitle">
+        Bienvenidos a la plataforma de control, turnos y uso transparente de los equipos tecnológicos de la <strong>Biblioteca 12 de Octubre</strong>. Elige tu portal de ingreso para acceder de acuerdo a tu perfil.
+      </p>
+    </div>
+
+
+    <!-- Portales de Ingreso Separados por Rol -->
+    <div class="portals-section">
+      <div class="portals-section-header">
+        <h2><i class="fas fa-door-open" style="color: var(--primary);"></i> Portales de Ingreso</h2>
+        <p>Selecciona la puerta de acceso que corresponde a tu rol en la biblioteca.</p>
+      </div>
+
+      <div class="portals-grid">
+        
+        <!-- Portal 1: Usuario / Comunidad -->
+        <div class="portal-card portal-user">
+          <div>
+            <div class="portal-card-header">
+              <div class="portal-icon">
+                <i class="fas fa-user"></i>
+              </div>
+              <span class="portal-role-tag">Comunidad</span>
+            </div>
+            <h3 class="portal-title">Portal de Usuario</h3>
+            <p class="portal-desc">
+              Para visitantes de la comunidad que necesitan consultar información, solicitar turno en la fila digital y usar los computadores de la biblioteca.
+            </p>
+          </div>
+
+          <div class="portal-actions">
+            <button class="btn btn-success" onclick="window.auth.openPortalLogin('usuario')">
+              <i class="fas fa-sign-in-alt"></i> Ingresar como Usuario
+            </button>
+            <button class="btn btn-secondary btn-sm" onclick="window.showModal('registerModal')">
+              <i class="fas fa-user-plus"></i> Registrarme como Usuario Nuevo
+            </button>
+          </div>
+        </div>
+
+        <!-- Portal 2: Funcionario / Personal de Sala -->
+        <div class="portal-card portal-staff">
+          <div>
+            <div class="portal-card-header">
+              <div class="portal-icon">
+                <i class="fas fa-user-tie"></i>
+              </div>
+              <span class="portal-role-tag">Personal de Sala</span>
+            </div>
+            <h3 class="portal-title">Portal de Funcionario</h3>
+            <p class="portal-desc">
+              Acceso para bibliotecarios encargados de supervisar los tiempos en tiempo real, asignar turnos a la fila y conceder prórrogas autorizadas.
+            </p>
+          </div>
+
+          <div class="portal-actions">
+            <button class="btn btn-warning" onclick="window.auth.openPortalLogin('funcionario')">
+              <i class="fas fa-tasks"></i> Ingresar a Sala de Control
+            </button>
+          </div>
+        </div>
+
+        <!-- Portal 3: Super Administrador -->
+        <div class="portal-card portal-admin">
+          <div>
+            <div class="portal-card-header">
+              <div class="portal-icon">
+                <i class="fas fa-shield-alt"></i>
+              </div>
+              <span class="portal-role-tag">Control Maestro</span>
+            </div>
+            <h3 class="portal-title">Portal Super Admin</h3>
+            <p class="portal-desc">
+              Acceso exclusivo para la Dirección general: configuración de tiempos, altas y bajas de computadores, directorio de usuarios, auditoría y reportes.
+            </p>
+          </div>
+
+          <div class="portal-actions">
+            <button class="btn btn-primary" onclick="window.auth.openPortalLogin('superadmin')" style="background: linear-gradient(135deg, #8b5cf6, #6366f1); border-color: #8b5cf6;">
+              <i class="fas fa-lock"></i> Consola Super Administrador
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+
+    <!-- Métricas Rápidas en Vivo -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; margin-top: 2rem;">
+      <div class="kpi-card">
+        <div class="kpi-icon emerald"><i class="fas fa-check-circle"></i></div>
+        <div class="kpi-data">
+          <span class="kpi-value" id="publicCountDisp">--</span>
+          <span class="kpi-label">Computadores Libres Ahora</span>
+        </div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-icon rose"><i class="fas fa-user-clock"></i></div>
+        <div class="kpi-data">
+          <span class="kpi-value" id="publicCountOcup">--</span>
+          <span class="kpi-label">Equipos en Uso Activo</span>
+        </div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-icon blue"><i class="fas fa-clock"></i></div>
+        <div class="kpi-data">
+          <span class="kpi-value">60 min</span>
+          <span class="kpi-label">Tiempo Estándar por Sesión</span>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Matriz de Computadores en Vivo -->
+    <div style="margin-top: 2.5rem;">
+      <div class="pc-grid-header">
+        <h2 class="pc-grid-title">
+          <i class="fas fa-network-wired" style="color: var(--primary);"></i>
+          Estado de la Sala en Tiempo Real
+        </h2>
+        <div class="pc-legend">
+          <div class="legend-item"><span class="legend-dot disponible"></span> Disponible</div>
+          <div class="legend-item"><span class="legend-dot ocupado"></span> Ocupado</div>
+          <div class="legend-item"><span class="legend-dot warning"></span> Próximo a vencer</div>
+          <div class="legend-item"><span class="legend-dot mantenimiento"></span> Mantenimiento</div>
+        </div>
+      </div>
+
+      <div class="pc-grid" id="publicPcGrid">
+        <!-- Renderizado dinámico de computadores -->
+      </div>
+    </div>
+
+
+    <!-- Sección Histórica e Informativa de la Biblioteca -->
+    <section class="library-about-section">
+      <div class="about-header">
+        <div class="about-badge">
+          <i class="fas fa-university"></i> Patrimonio Comunitario y Cultural
+        </div>
+        <h2 class="about-title">Conoce la Biblioteca 12 de Octubre</h2>
+        <p class="about-subtitle">
+          Un espacio de encuentro, aprendizaje, memoria viva e inclusión digital construido con el esfuerzo de la comunidad en la zona noroccidental de Medellín.
+        </p>
+      </div>
+
+      <!-- Tarjeta Principal de Historia y Origen -->
+      <div class="about-main-card">
+        <div class="about-columns">
+          <div class="about-text-content">
+            <h3><i class="fas fa-landmark" style="color: var(--primary);"></i> Origen e Historia de Nuestra Biblioteca</h3>
+            <p>
+              La <strong>Biblioteca Pública 12 de Octubre</strong> nació como fruto de la organización social, la perseverancia y el compromiso de los líderes comunitarios de la <strong>Comuna 6 (Doce de Octubre)</strong> de Medellín durante las décadas de 1980 y 1990. En medio de los desafíos históricos del sector, las familias y vecinos soñaron con un lugar de paz, lectura y superación donde los niños y jóvenes pudieran forjar un futuro mejor.
+            </p>
+            <p>
+              Con el paso de los años, este esfuerzo colectivo se consolidó e integró formalmente a la red pública de la ciudad dentro del <strong>Sistema de Bibliotecas Públicas de Medellín (SBPM)</strong>. Hoy en día, la biblioteca es el corazón cultural del barrio, un punto de referencia para la educación, el diálogo intergeneracional y el libre acceso a la información sin costo alguno.
+            </p>
+            <div class="about-quote">
+              "Un espacio público donde el conocimiento, la tecnología y los libros están al servicio de toda la comunidad para transformar realidades."
+            </div>
+            <p>
+              Con la llegada de <strong>BiblioTiempoDoce</strong>, reafirmamos nuestro compromiso con la justicia social y el acceso equitativo a la tecnología: un sistema inteligente que garantiza que cada vecino, estudiante o investigador disfrute del tiempo necesario frente al computador de manera organizada, transparente y sin favoritismos.
+            </p>
+          </div>
+
+          <!-- Hitos Destacados -->
+          <div class="about-milestones">
+            <div class="milestone-box">
+              <div class="milestone-icon"><i class="fas fa-users-cog"></i></div>
+              <div class="milestone-info">
+                <h4>Iniciativa Popular y Comunitaria</h4>
+                <p>Creada por iniciativa de las juntas de acción comunal y vecinos de los barrios Kennedy, Picacho y Doce de Octubre.</p>
+              </div>
+            </div>
+
+            <div class="milestone-box">
+              <div class="milestone-icon"><i class="fas fa-award"></i></div>
+              <div class="milestone-info">
+                <h4>Red Pública de Medellín (SBPM)</h4>
+                <p>Integrada oficialmente al Sistema de Bibliotecas Públicas de Medellín para garantizar servicios de calidad, libros actualizados e internet gratuito.</p>
+              </div>
+            </div>
+
+            <div class="milestone-box">
+              <div class="milestone-icon"><i class="fas fa-laptop-code"></i></div>
+              <div class="milestone-info">
+                <h4>Cierre de la Brecha Digital</h4>
+                <p>Equipada con sala tecnológica y conectividad para estudiantes de colegios públicos, universitarios y personas mayores.</p>
+              </div>
+            </div>
+
+            <div class="milestone-box">
+              <div class="milestone-icon"><i class="fas fa-clock"></i></div>
+              <div class="milestone-info">
+                <h4>Innovación con BiblioTiempoDoce</h4>
+                <p>Gestión digital de turnos y control de tiempo en vivo para un uso armónico, ordenado y solidario de los recursos tecnológicos.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cuadrícula de Servicios de la Biblioteca -->
+      <div class="about-services-grid">
+        <div class="about-service-item">
+          <div class="service-icon-wrap tic">
+            <i class="fas fa-desktop"></i>
+          </div>
+          <h4>Sala TIC y Conectividad</h4>
+          <p>Equipos de cómputo con internet de alta velocidad, software de ofimática y soporte bibliotecario para consultas académicas y trámites.</p>
+        </div>
+
+        <div class="about-service-item">
+          <div class="service-icon-wrap books">
+            <i class="fas fa-book-open"></i>
+          </div>
+          <h4>Colección y Fomento Lector</h4>
+          <p>Miles de libros de literatura universal, textos escolares, enciclopedias y una cálida sala infantil con clubes de lectura semanales.</p>
+        </div>
+
+        <div class="about-service-item">
+          <div class="service-icon-wrap adults">
+            <i class="fas fa-chalkboard-teacher"></i>
+          </div>
+          <h4>Alfabetización Digital</h4>
+          <p>Talleres gratuitos de informática básica dirigidos a adultos mayores y miembros de la comunidad que buscan aprender a usar herramientas digitales.</p>
+        </div>
+
+        <div class="about-service-item">
+          <div class="service-icon-wrap community">
+            <i class="fas fa-heart"></i>
+          </div>
+          <h4>Memoria y Cultura Barrial</h4>
+          <p>Espacio de encuentro para preservar la memoria colectiva del barrio Doce de Octubre mediante talleres artísticos, charlas y exposiciones.</p>
+        </div>
+      </div>
+
+      <!-- Barra Informativa de Contacto y Horarios -->
+      <div class="library-info-bar">
+        <div class="info-item">
+          <i class="fas fa-map-marker-alt"></i>
+          <div class="info-item-text">
+            <span class="info-item-label">Ubicación</span>
+            <span class="info-item-val">Comuna 6 (Doce de Octubre), Medellín</span>
+          </div>
+        </div>
+
+        <div class="info-item">
+          <i class="fas fa-door-open"></i>
+          <div class="info-item-text">
+            <span class="info-item-label">Acceso</span>
+            <span class="info-item-val">100% Gratuito y Libre</span>
+          </div>
+        </div>
+
+        <div class="info-item">
+          <i class="fas fa-calendar-alt"></i>
+          <div class="info-item-text">
+            <span class="info-item-label">Horarios de Atención</span>
+            <span class="info-item-val">Lunes a Sábado: 8:00 a.m. - 6:00 p.m.</span>
+          </div>
+        </div>
+
+        <div class="info-item">
+          <i class="fas fa-shield-alt"></i>
+          <div class="info-item-text">
+            <span class="info-item-label">Compromiso</span>
+            <span class="info-item-val">Convivencia y Respeto Comunitario</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</section>

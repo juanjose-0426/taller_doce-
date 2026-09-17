@@ -79,6 +79,11 @@ window.router = router;
 // Lógica general de la aplicación
 const app = {
   async init() {
+    // Cargar componentes HTML modulares de la aplicación
+    if (window.componentLoader) {
+      await window.componentLoader.loadAll();
+    }
+
     startSystemClock();
 
     // Inicializar Sockets y Audio

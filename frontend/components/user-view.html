@@ -1,0 +1,52 @@
+<!-- -----------------------------------------------------------------------
+     VISTA 2: VISTA Y PANEL DE USUARIOS DE LA COMUNIDAD (#userView)
+     ----------------------------------------------------------------------- -->
+
+<section id="userView" class="view-section">
+  <div class="user-dashboard">
+    
+    <!-- Hero de Sesión Activa con Temporizador Circular -->
+    <div id="userSessionHeroContainer">
+      <!-- Renderizado dinámico -->
+    </div>
+
+    <!-- Tarjeta de Turno / Fila de Espera Digital -->
+    <div id="userQueueCardContainer">
+      <!-- Renderizado dinámico -->
+    </div>
+
+    <!-- Computadores Disponibles para Inicio Rápido -->
+    <div>
+      <h3 style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+        <i class="fas fa-check-double" style="color: var(--status-disponible);"></i>
+        Equipos Disponibles para Uso Inmediato
+      </h3>
+      <div class="pc-grid" id="userAvailablePCsList">
+        <!-- Renderizado dinámico -->
+      </div>
+    </div>
+
+    <!-- Historial Personal de Sesiones -->
+    <div class="queue-table-container">
+      <div class="queue-table-header">
+        <h4><i class="fas fa-history" style="color: var(--primary);"></i> Mi Historial de Uso</h4>
+      </div>
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Computador</th>
+              <th>Fecha y Hora</th>
+              <th>Tiempo Utilizado</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody id="userHistoryTableBody">
+            <!-- Renderizado dinámico -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</section>
