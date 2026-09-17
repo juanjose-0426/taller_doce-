@@ -22,11 +22,15 @@
 </head>
 <body>
 
-  <!-- ============================================================
-       BARRA SUPERIOR DE NAVEGACIÓN
-       ============================================================ -->
+
+  <!-- =========================================================================
+       1. BARRA SUPERIOR DE NAVEGACIÓN (HEADER & PROFILE)
+       ========================================================================= -->
+
   <header class="main-header">
     <div class="header-container">
+      
+      <!-- Marca y Logotipo -->
       <a href="javascript:void(0)" class="brand" onclick="window.router.navigate('publicView')">
         <div class="brand-icon">
           <i class="fas fa-desktop"></i>
@@ -37,6 +41,7 @@
         </div>
       </a>
 
+      <!-- Reloj del Sistema y Enlaces de Navegación -->
       <div class="header-center">
         <div class="system-clock">
           <i class="fas fa-clock"></i>
@@ -47,6 +52,7 @@
         </div>
       </div>
 
+      <!-- Acciones de Cabecera: Notificaciones y Login/Perfil -->
       <div class="header-actions">
         <!-- Notificaciones -->
         <button class="btn-icon" id="notificationToggleBtn" title="Notificaciones">
@@ -81,17 +87,24 @@
           </button>
         </div>
       </div>
+
     </div>
   </header>
 
-  <!-- ============================================================
-       CONTENIDO PRINCIPAL / VISTAS SPA
-       ============================================================ -->
+
+
+
+  <!-- =========================================================================
+       2. CONTENIDO PRINCIPAL Y VISTAS SPA
+       ========================================================================= -->
+
   <main class="main-content">
 
-    <!-- ------------------------------------------------------------
-         1. VISTA PÚBLICA (PORTALES DE INGRESO, INFORMACIÓN Y SALA EN VIVO)
-         ------------------------------------------------------------ -->
+
+    <!-- -----------------------------------------------------------------------
+         VISTA 1: VISTA PÚBLICA (PORTALES DE INGRESO, INFORMACIÓN Y SALA EN VIVO)
+         ----------------------------------------------------------------------- -->
+
     <section id="publicView" class="view-section active">
       <div class="hero-section">
         
@@ -108,9 +121,8 @@
           </p>
         </div>
 
-        <!-- ============================================================
-             PORTALES DE INGRESO SEPARADOS
-             ============================================================ -->
+
+        <!-- Portales de Ingreso Separados por Rol -->
         <div class="portals-section">
           <div class="portals-section-header">
             <h2><i class="fas fa-door-open" style="color: var(--primary);"></i> Portales de Ingreso</h2>
@@ -118,7 +130,8 @@
           </div>
 
           <div class="portals-grid">
-            <!-- PORTAL 1: USUARIO / COMUNIDAD -->
+            
+            <!-- Portal 1: Usuario / Comunidad -->
             <div class="portal-card portal-user">
               <div>
                 <div class="portal-card-header">
@@ -143,7 +156,7 @@
               </div>
             </div>
 
-            <!-- PORTAL 2: FUNCIONARIO / PERSONAL DE SALA -->
+            <!-- Portal 2: Funcionario / Personal de Sala -->
             <div class="portal-card portal-staff">
               <div>
                 <div class="portal-card-header">
@@ -165,7 +178,7 @@
               </div>
             </div>
 
-            <!-- PORTAL 3: SUPER ADMINISTRADOR -->
+            <!-- Portal 3: Super Administrador -->
             <div class="portal-card portal-admin">
               <div>
                 <div class="portal-card-header">
@@ -186,8 +199,10 @@
                 </button>
               </div>
             </div>
+
           </div>
         </div>
+
 
         <!-- Métricas Rápidas en Vivo -->
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; margin-top: 2rem;">
@@ -214,6 +229,7 @@
           </div>
         </div>
 
+
         <!-- Matriz de Computadores en Vivo -->
         <div style="margin-top: 2.5rem;">
           <div class="pc-grid-header">
@@ -234,9 +250,8 @@
           </div>
         </div>
 
-        <!-- ============================================================
-             SECCIÓN EXPLICATIVA E HISTÓRICA: BIBLIOTECA 12 DE OCTUBRE
-             ============================================================ -->
+
+        <!-- Sección Histórica e Informativa de la Biblioteca -->
         <section class="library-about-section">
           <div class="about-header">
             <div class="about-badge">
@@ -378,11 +393,16 @@
       </div>
     </section>
 
-    <!-- ------------------------------------------------------------
-         2. VISTA / PANEL DEL USUARIO
-         ------------------------------------------------------------ -->
+
+
+
+    <!-- -----------------------------------------------------------------------
+         VISTA 2: VISTA Y PANEL DE USUARIOS DE LA COMUNIDAD (#userView)
+         ----------------------------------------------------------------------- -->
+
     <section id="userView" class="view-section">
       <div class="user-dashboard">
+        
         <!-- Hero de Sesión Activa con Temporizador Circular -->
         <div id="userSessionHeroContainer">
           <!-- Renderizado dinámico -->
@@ -425,14 +445,20 @@
             </table>
           </div>
         </div>
+
       </div>
     </section>
 
-    <!-- ------------------------------------------------------------
-         3. VISTA / PANEL DEL FUNCIONARIO (SALA DE CONTROL)
-         ------------------------------------------------------------ -->
+
+
+
+    <!-- -----------------------------------------------------------------------
+         VISTA 3: VISTA Y PANEL DE FUNCIONARIOS DE SALA (#staffView)
+         ----------------------------------------------------------------------- -->
+
     <section id="staffView" class="view-section">
       <div class="staff-container">
+        
         <!-- Barra de métricas y controles rápidos -->
         <div class="staff-toolbar">
           <div class="staff-metrics">
@@ -498,15 +524,21 @@
             </table>
           </div>
         </div>
+
       </div>
     </section>
 
-    <!-- ------------------------------------------------------------
-         4. VISTA / PANEL DEL SUPER ADMINISTRADOR
-         ------------------------------------------------------------ -->
+
+
+
+    <!-- -----------------------------------------------------------------------
+         VISTA 4: VISTA Y CONSOLA DE SUPER ADMINISTRACIÓN (#adminView)
+         ----------------------------------------------------------------------- -->
+
     <section id="adminView" class="view-section">
       <div class="admin-container">
-        <!-- Navegación por pestañas del Super Admin -->
+        
+        <!-- Navegación por Pestañas del Super Admin -->
         <div class="admin-tabs">
           <button class="admin-tab-btn active" data-tab="tab-admin-dashboard">
             <i class="fas fa-chart-pie"></i> Tablero & KPIs
@@ -528,9 +560,11 @@
           </button>
         </div>
 
-        <!-- Pestaña 1: Tablero y Gráficos -->
+
+        <!-- Tab 1: Tablero y Gráficos Estadísticos -->
         <div id="tab-admin-dashboard" class="admin-tab-panel active">
-          <!-- KPIs -->
+          
+          <!-- KPIs de Administración -->
           <div class="admin-kpis-grid" style="margin-bottom: 2rem;">
             <div class="kpi-card">
               <div class="kpi-icon blue"><i class="fas fa-desktop"></i></div>
@@ -605,9 +639,11 @@
               </div>
             </div>
           </div>
+
         </div>
 
-        <!-- Pestaña 2: Computadores CRUD -->
+
+        <!-- Tab 2: Computadores CRUD -->
         <div id="tab-admin-pcs" class="admin-tab-panel">
           <div class="queue-table-container">
             <div class="queue-table-header">
@@ -636,7 +672,8 @@
           </div>
         </div>
 
-        <!-- Pestaña 3: Usuarios y Roles CRUD -->
+
+        <!-- Tab 3: Usuarios y Roles CRUD -->
         <div id="tab-admin-users" class="admin-tab-panel">
           <div class="queue-table-container">
             <div class="queue-table-header" style="flex-wrap: wrap; gap: 1rem;">
@@ -668,7 +705,8 @@
           </div>
         </div>
 
-        <!-- Pestaña 4: Configuración del Sistema -->
+
+        <!-- Tab 4: Configuración del Sistema -->
         <div id="tab-admin-config" class="admin-tab-panel">
           <div class="queue-table-container" style="max-width: 700px; margin: 0 auto; padding: 2rem;">
             <h3 style="margin-bottom: 1.5rem;"><i class="fas fa-sliders-h" style="color: var(--primary);"></i> Parámetros Operativos del Sistema</h3>
@@ -705,7 +743,8 @@
           </div>
         </div>
 
-        <!-- Pestaña 5: Historial de Auditoría -->
+
+        <!-- Tab 5: Historial de Auditoría -->
         <div id="tab-admin-audit" class="admin-tab-panel">
           <div class="queue-table-container">
             <div class="queue-table-header">
@@ -732,7 +771,8 @@
           </div>
         </div>
 
-        <!-- Pestaña 6: Reportes & Exportación CSV -->
+
+        <!-- Tab 6: Reportes & Exportación CSV -->
         <div id="tab-admin-reports" class="admin-tab-panel">
           <div class="staff-toolbar" style="margin-bottom: 1.5rem;">
             <div style="display: flex; gap: 1rem; align-items: flex-end; flex-wrap: wrap;">
@@ -804,13 +844,19 @@
             </div>
           </div>
         </div>
+
       </div>
     </section>
+
   </main>
 
-  <!-- ============================================================
-       DRAWER LATERAL DE NOTIFICACIONES
-       ============================================================ -->
+
+
+
+  <!-- =========================================================================
+       3. DRAWER LATERAL DE NOTIFICACIONES
+       ========================================================================= -->
+
   <aside class="notification-drawer" id="notificationDrawer">
     <div class="drawer-header">
       <h4 style="display: flex; align-items: center; gap: 0.5rem;">
@@ -830,11 +876,14 @@
     </div>
   </aside>
 
-  <!-- ============================================================
-       MODALES DIÁLOGO DE INGRESO SEPARADOS POR ROL
-       ============================================================ -->
 
-  <!-- 1. Modal: Ingreso PORTAL USUARIO -->
+
+
+  <!-- =========================================================================
+       4. MODALES DE AUTENTICACIÓN Y REGISTRO POR ROL
+       ========================================================================= -->
+
+  <!-- Modal 1: Portal Ingreso USUARIO -->
   <div class="modal-overlay" id="loginUserModal">
     <div class="modal-card user-portal">
       <div class="modal-header">
@@ -879,7 +928,8 @@
     </div>
   </div>
 
-  <!-- 2. Modal: Ingreso PORTAL FUNCIONARIO -->
+
+  <!-- Modal 2: Portal Ingreso FUNCIONARIO -->
   <div class="modal-overlay" id="loginStaffModal">
     <div class="modal-card staff-portal">
       <div class="modal-header">
@@ -917,7 +967,8 @@
     </div>
   </div>
 
-  <!-- 3. Modal: Ingreso PORTAL SUPER ADMINISTRADOR -->
+
+  <!-- Modal 3: Portal Ingreso SUPER ADMINISTRADOR -->
   <div class="modal-overlay" id="loginAdminModal">
     <div class="modal-card admin-portal">
       <div class="modal-header">
@@ -955,7 +1006,8 @@
     </div>
   </div>
 
-  <!-- Modal: Registro de Usuario -->
+
+  <!-- Modal 4: Registro de Usuario Nuevo -->
   <div class="modal-overlay" id="registerModal">
     <div class="modal-card user-portal">
       <div class="modal-header">
@@ -991,7 +1043,14 @@
     </div>
   </div>
 
-  <!-- Modal: Asignar Sesión Manual (Funcionario) -->
+
+
+
+  <!-- =========================================================================
+       5. MODALES DE OPERACIÓN Y FUNCIONARIOS DE SALA
+       ========================================================================= -->
+
+  <!-- Modal 5: Asignar Sesión Manual en PC (Funcionario) -->
   <div class="modal-overlay" id="staffAssignModal">
     <div class="modal-card staff-portal">
       <div class="modal-header">
@@ -1024,7 +1083,8 @@
     </div>
   </div>
 
-  <!-- Modal: Agregar Visitante a Fila de Espera (Funcionario) -->
+
+  <!-- Modal 6: Agregar Visitante a Fila de Espera (Funcionario) -->
   <div class="modal-overlay" id="staffAddQueueModal">
     <div class="modal-card staff-portal">
       <div class="modal-header">
@@ -1046,7 +1106,14 @@
     </div>
   </div>
 
-  <!-- Modal: Crear / Editar Computador (Admin) -->
+
+
+
+  <!-- =========================================================================
+       6. MODALES DE SUPER ADMINISTRACIÓN (CRUD)
+       ========================================================================= -->
+
+  <!-- Modal 7: Crear / Editar Computador (Admin) -->
   <div class="modal-overlay" id="adminPcModal">
     <div class="modal-card admin-portal">
       <div class="modal-header">
@@ -1083,7 +1150,8 @@
     </div>
   </div>
 
-  <!-- Modal: Crear / Editar Usuario (Admin) -->
+
+  <!-- Modal 8: Crear / Editar Usuario (Admin) -->
   <div class="modal-overlay" id="adminUserModal">
     <div class="modal-card admin-portal">
       <div class="modal-header">
@@ -1130,14 +1198,22 @@
     </div>
   </div>
 
-  <!-- ============================================================
-       CONTENEDOR DE TOASTS FLOTANTES
-       ============================================================ -->
+
+
+
+  <!-- =========================================================================
+       7. CONTENEDOR DE NOTIFICACIONES TOAST FLOTANTES
+       ========================================================================= -->
+
   <div class="toast-container" id="toastContainer"></div>
 
-  <!-- ============================================================
-       PIE DE PÁGINA
-       ============================================================ -->
+
+
+
+  <!-- =========================================================================
+       8. PIE DE PÁGINA (FOOTER)
+       ========================================================================= -->
+
   <footer class="main-footer">
     <div class="footer-container">
       <div>
@@ -1149,7 +1225,13 @@
     </div>
   </footer>
 
-  <!-- Scripts de la Aplicación -->
+
+
+
+  <!-- =========================================================================
+       9. SCRIPTS DE LA APLICACIÓN
+       ========================================================================= -->
+
   <script src="/socket.io/socket.io.js"></script>
   <script src="/js/api.js"></script>
   <script src="/js/socket.js"></script>
@@ -1158,5 +1240,6 @@
   <script src="/js/staffPanel.js"></script>
   <script src="/js/adminPanel.js"></script>
   <script src="/js/app.js"></script>
+
 </body>
 </html>
