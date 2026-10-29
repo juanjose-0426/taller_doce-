@@ -6,8 +6,23 @@ const { logAudit } = require('../utils/logger');
  */
 async function startSession(req, res) {
   try {
-    const { computador_id } = req.body;
-    const usuario_id = req.body.usuario_id || req.user.id; // Permite a funcionario asignar a otro usuario
+    const { computador_id, documento_usuario } = req.body;
+
+    // Resuelve usuario_id: el funcionario puede pasar documento_usuario para buscar al visitante
+    let usuario_id = req.body.usuario_id || req.user.id;
+    if (documento_usuario && (req.user.rol_nombre === 'funcionario' || req.user.rol_nombre === 'superadmin')) {
+      const usuarioEncontrado = await getOne(
+        "SELECT id FROM usuarios WHERE documento = ? AND estado = 'activo'",
+        [documento_usuario]
+      );
+      if (!usuarioEncontrado) {
+        return res.status(404).json({
+          success: false,
+          message: `No se encontro ningun usuario activo con el documento "${documento_usuario}". Verificalo o registralo primero.`
+        });
+      }
+      usuario_id = usuarioEncontrado.id;
+    }
 
     if (!computador_id) {
       return res.status(400).json({ success: false, message: 'Se requiere el ID del computador.' });
@@ -45,14 +60,14 @@ async function startSession(req, res) {
       });
     }
 
-    // Obtener tiempo máximo configurado en el sistema
+    // Obtener tiempo maximo: primero del request body, luego de la config del sistema
     const config = await getOne('SELECT tiempo_maximo FROM configuracion WHERE id = 1');
-    const tiempoMaximo = config ? config.tiempo_maximo : 60; // default 60 min
+    const tiempoMaximo = parseInt(req.body.tiempo_maximo, 10) || (config ? config.tiempo_maximo : 60);
 
-    // Crear la sesión
+    // Crear la sesion. NOW() es normalizado automaticamente a datetime('now','localtime') en SQLite.
     const result = await run(
       `INSERT INTO sesiones (usuario_id, computador_id, fecha_inicio, tiempo_maximo, tiempo_utilizado, estado)
-       VALUES (?, ?, datetime('now', 'localtime'), ?, 0, 'activa')`,
+       VALUES (?, ?, NOW(), ?, 0, 'activa')`,
       [usuario_id, computador_id, tiempoMaximo]
     );
 

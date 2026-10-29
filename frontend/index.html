@@ -6,30 +6,20 @@
   <title>BiblioTiempoDoce | Biblioteca 12 de Octubre</title>
   <meta name="description" content="Sistema de control de tiempo, lista de espera y gestión inteligente de computadores de la Biblioteca 12 de Octubre - Medellín.">
 
-  <!-- Tipografías modernas -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-  <!-- Iconos FontAwesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-  <!-- Chart.js para estadísticas -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 
-  <!-- Estilos principales -->
   <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
 
-  <!-- =========================================================================
-       COMPONENTES HTML CARGADOS DINÁMICAMENTE DESDE /components/
-       ========================================================================= -->
-
-  <!-- 1. Componente Header & Perfil -->
   <div id="header-slot"></div>
 
-  <!-- 2. Vistas SPA -->
   <main class="main-content">
     <div id="public-view-slot"></div>
     <div id="user-view-slot"></div>
@@ -37,23 +27,15 @@
     <div id="admin-view-slot"></div>
   </main>
 
-  <!-- 3. Drawer de Notificaciones -->
   <div id="notifications-slot"></div>
 
-  <!-- 4. Modales del Sistema -->
   <div id="modals-auth-slot"></div>
   <div id="modals-staff-slot"></div>
   <div id="modals-admin-slot"></div>
 
-  <!-- 5. Contenedor de Toasts Flotantes -->
   <div class="toast-container" id="toastContainer"></div>
 
-  <!-- 6. Footer / Pie de Página -->
   <div id="footer-slot"></div>
-
-  <!-- =========================================================================
-       SCRIPTS DE LA APLICACIÓN
-       ========================================================================= -->
 
   <script src="/socket.io/socket.io.js"></script>
   <script src="/js/api.js"></script>

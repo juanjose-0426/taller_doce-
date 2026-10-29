@@ -1,9 +1,5 @@
-/**
- * BIBLIOTIEMPODOCE - PANEL DEL USUARIO
- * Gestión de sesión activa, temporizador circular interactivo, fila y turnos
- */
-
 const userPanel = {
+  initialized: false,
   activeSession: null,
   timerInterval: null,
   myQueuePosition: null,
@@ -13,7 +9,10 @@ const userPanel = {
     await this.loadQueuePosition();
     await this.loadAvailablePCs();
     await this.loadUserHistory();
-    this.setupListeners();
+    if (!this.initialized) {
+      this.setupListeners();
+      this.initialized = true;
+    }
   },
 
   setupListeners() {
@@ -46,8 +45,8 @@ const userPanel = {
 
   async loadActiveSession() {
     const res = await window.api.get('/sessions/my-active');
-    if (res.success && res.active) {
-      this.activeSession = res.data;
+    if (res.success && res.hasActiveSession) {
+      this.activeSession = res.session;
       this.startLiveTimer();
     } else {
       this.stopTimer();
@@ -85,7 +84,7 @@ const userPanel = {
             <span class="status-badge disponible">Disponible</span>
           </div>
           <div style="font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 0.75rem;">
-            ${pc.especificaciones || 'Equipo estándar de consulta'}
+            ${pc.descripcion || pc.especificaciones || 'Equipo estándar de consulta'}
           </div>
           <button class="btn btn-success btn-sm" style="width: 100%;" onclick="userPanel.requestStartSession(${pc.id})">
             <i class="fas fa-play"></i> Iniciar Uso Aquí
@@ -158,8 +157,8 @@ const userPanel = {
     }
 
     const s = this.activeSession;
-    const isCritical = s.segundosRestantes <= 300; // <= 5 min
-    const isWarning = s.segundosRestantes <= 900; // <= 15 min
+    const isCritical = s.segundosRestantes <= 300;
+    const isWarning = s.segundosRestantes <= 900;
 
     container.innerHTML = `
       <div class="active-session-hero ${isCritical ? 'critical' : ''}">
@@ -175,7 +174,7 @@ const userPanel = {
           </div>
 
           ${isCritical ? `
-            <div style="background: rgba(239, 68, 68, 0.2); border: 1px solid var(--status-ocupado); padding: 0.75rem 1rem; border-radius: var(--radius-md); font-size: 0.85rem; color: #fecaca; display: flex; align-items: center; gap: 0.5rem; margin-top: 0.5rem;">
+            <div style="background: rgba(220, 38, 38, 0.1); border: 1px solid var(--status-ocupado); padding: 0.75rem 1rem; border-radius: var(--radius-md); font-size: 0.85rem; color: #991b1b; display: flex; align-items: center; gap: 0.5rem; margin-top: 0.5rem;">
               <i class="fas fa-exclamation-triangle" style="color: var(--status-ocupado); font-size: 1.2rem;"></i>
               <div>
                 <strong>¡Atención! Tu sesión está próxima a expirar.</strong>
@@ -244,7 +243,7 @@ const userPanel = {
     } else {
       container.innerHTML = `
         <div class="queue-card" style="border-style: dashed;">
-          <div class="queue-badge-number" style="background: rgba(255, 255, 255, 0.05); color: var(--text-muted); box-shadow: none;">
+          <div class="queue-badge-number" style="background: var(--bg-elevated); color: var(--text-muted); box-shadow: none;">
             <i class="fas fa-users" style="font-size: 1.8rem;"></i>
           </div>
           <div class="queue-details">
@@ -299,7 +298,7 @@ const userPanel = {
 
     if (circle) {
       const totalSecs = (this.activeSession.tiempo_maximo || 60) * 60;
-      const circumference = 2 * Math.PI * 60; // r=60 -> 376.99
+      const circumference = 2 * Math.PI * 60;
       const percent = Math.max(0, remaining / totalSecs);
       const offset = circumference * (1 - percent);
       circle.style.strokeDashoffset = offset;

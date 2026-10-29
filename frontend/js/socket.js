@@ -1,7 +1,3 @@
-/**
- * BIBLIOTIEMPODOCE - TIEMPO REAL & SOCKET.IO CON SÍNTESIS DE AUDIO
- */
-
 class SocketService {
   constructor() {
     this.socket = null;
@@ -26,7 +22,6 @@ class SocketService {
       }
     });
 
-    // Eventos en tiempo real
     this.socket.on('pc:updated', (data) => {
       window.dispatchEvent(new CustomEvent('realtime:pc-updated', { detail: data }));
     });
@@ -79,9 +74,6 @@ class SocketService {
     }
   }
 
-  /**
-   * Generador de campanadas acústicas mediante Web Audio API
-   */
   playChime(type = 'info') {
     try {
       const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -102,7 +94,6 @@ class SocketService {
       gain.connect(this.audioCtx.destination);
 
       if (type === 'critical') {
-        // Alarma urgente de tiempo agotado
         osc.type = 'sawtooth';
         osc.frequency.setValueAtTime(880, now);
         osc.frequency.exponentialRampToValueAtTime(440, now + 0.3);
@@ -111,25 +102,22 @@ class SocketService {
         osc.start(now);
         osc.stop(now + 0.3);
       } else if (type === 'warning') {
-        // Doble campanada sutil
         osc.type = 'sine';
-        osc.frequency.setValueAtTime(659.25, now); // Mi (E5)
+        osc.frequency.setValueAtTime(659.25, now);
         gain.gain.setValueAtTime(0.2, now);
         gain.gain.exponentialRampToValueAtTime(0.01, now + 0.4);
         osc.start(now);
         osc.stop(now + 0.4);
       } else if (type === 'success') {
-        // Campanada positiva de turno
         osc.type = 'triangle';
-        osc.frequency.setValueAtTime(523.25, now); // C5
-        osc.frequency.setValueAtTime(659.25, now + 0.15); // E5
-        osc.frequency.setValueAtTime(783.99, now + 0.3); // G5
+        osc.frequency.setValueAtTime(523.25, now);
+        osc.frequency.setValueAtTime(659.25, now + 0.15);
+        osc.frequency.setValueAtTime(783.99, now + 0.3);
         gain.gain.setValueAtTime(0.25, now);
         gain.gain.exponentialRampToValueAtTime(0.01, now + 0.6);
         osc.start(now);
         osc.stop(now + 0.6);
       } else {
-        // Info leve
         osc.type = 'sine';
         osc.frequency.setValueAtTime(587.33, now);
         gain.gain.setValueAtTime(0.15, now);
@@ -138,7 +126,6 @@ class SocketService {
         osc.stop(now + 0.25);
       }
     } catch (e) {
-      // Audio bloqueado por política de interacción
     }
   }
 }

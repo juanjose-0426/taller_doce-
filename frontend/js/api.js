@@ -1,7 +1,3 @@
-/**
- * BIBLIOTIEMPODOCE - CAPA DE COMUNICACIÓN API REST
- */
-
 const API_BASE = '/api';
 
 const api = {
@@ -16,13 +12,23 @@ const api = {
   getUser() {
     try {
       const u = localStorage.getItem('bt_user');
-      return u ? JSON.parse(u) : null;
+      if (!u) return null;
+      const parsed = JSON.parse(u);
+      if (parsed) {
+        parsed.rol = parsed.rol || parsed.rol_nombre;
+        parsed.rol_nombre = parsed.rol_nombre || parsed.rol;
+      }
+      return parsed;
     } catch (e) {
       return null;
     }
   },
 
   setUser(user) {
+    if (user) {
+      user.rol = user.rol || user.rol_nombre;
+      user.rol_nombre = user.rol_nombre || user.rol;
+    }
     localStorage.setItem('bt_user', JSON.stringify(user));
   },
 
@@ -52,7 +58,6 @@ const api = {
       const data = await res.json();
 
       if (res.status === 401) {
-        // Token inválido o expirado
         this.clearSession();
         window.dispatchEvent(new CustomEvent('auth:expired'));
       }

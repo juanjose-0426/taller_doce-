@@ -1,11 +1,6 @@
-<!-- -----------------------------------------------------------------------
-     VISTA 1: VISTA PÚBLICA (PORTALES DE INGRESO, INFORMACIÓN Y SALA EN VIVO)
-     ----------------------------------------------------------------------- -->
-
 <section id="publicView" class="view-section active">
   <div class="hero-section">
     
-    <!-- Banner Principal -->
     <div class="hero-banner">
       <span class="hero-badge">
         <i class="fas fa-book-reader"></i> Sistema de Bibliotecas Públicas &bull; Comuna 6, Medellín
@@ -18,9 +13,7 @@
       </p>
     </div>
 
-
-    <!-- Portales de Ingreso Separados por Rol -->
-    <div class="portals-section">
+    <div class="portals-section" id="publicPortalsSection">
       <div class="portals-section-header">
         <h2><i class="fas fa-door-open" style="color: var(--primary);"></i> Portales de Ingreso</h2>
         <p>Selecciona la puerta de acceso que corresponde a tu rol en la biblioteca.</p>
@@ -28,7 +21,6 @@
 
       <div class="portals-grid">
         
-        <!-- Portal 1: Usuario / Comunidad -->
         <div class="portal-card portal-user">
           <div>
             <div class="portal-card-header">
@@ -53,7 +45,6 @@
           </div>
         </div>
 
-        <!-- Portal 2: Funcionario / Personal de Sala -->
         <div class="portal-card portal-staff">
           <div>
             <div class="portal-card-header">
@@ -75,7 +66,6 @@
           </div>
         </div>
 
-        <!-- Portal 3: Super Administrador -->
         <div class="portal-card portal-admin">
           <div>
             <div class="portal-card-header">
@@ -100,8 +90,30 @@
       </div>
     </div>
 
+    <!-- Banner cuando ya ha iniciado sesión -->
+    <div id="publicLoggedInBanner" style="display: none; background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.5rem 2rem; margin-top: 1.5rem; box-shadow: var(--shadow-sm);">
+      <div style="display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap;">
+        <div style="display: flex; align-items: center; gap: 1.25rem;">
+          <div style="width: 52px; height: 52px; border-radius: 50%; background: var(--primary-light); border: 2px solid var(--primary); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: var(--primary);">
+            <i class="fas fa-user-check"></i>
+          </div>
+          <div>
+            <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px;">Sesión Activa en el Sistema</div>
+            <h3 style="margin: 0.2rem 0; font-size: 1.25rem; color: var(--text-primary);" id="publicLoggedInUserName">Usuario</h3>
+            <span class="status-badge disponible" id="publicLoggedInUserRole" style="font-size: 0.72rem;">ROL</span>
+          </div>
+        </div>
+        <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+          <button class="btn btn-primary" id="publicGoToPanelBtn">
+            <i class="fas fa-tachometer-alt"></i> Ir a Mi Panel
+          </button>
+          <button class="btn btn-secondary" onclick="window.auth.logout()">
+            <i class="fas fa-power-off" style="color: var(--status-ocupado);"></i> Cerrar Sesión
+          </button>
+        </div>
+      </div>
+    </div>
 
-    <!-- Métricas Rápidas en Vivo -->
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; margin-top: 2rem;">
       <div class="kpi-card">
         <div class="kpi-icon emerald"><i class="fas fa-check-circle"></i></div>
@@ -126,8 +138,6 @@
       </div>
     </div>
 
-
-    <!-- Matriz de Computadores en Vivo -->
     <div style="margin-top: 2.5rem;">
       <div class="pc-grid-header">
         <h2 class="pc-grid-title">
@@ -142,13 +152,9 @@
         </div>
       </div>
 
-      <div class="pc-grid" id="publicPcGrid">
-        <!-- Renderizado dinámico de computadores -->
-      </div>
+      <div class="pc-grid" id="publicPcGrid"></div>
     </div>
 
-
-    <!-- Sección Histórica e Informativa de la Biblioteca -->
     <section class="library-about-section">
       <div class="about-header">
         <div class="about-badge">
@@ -160,7 +166,6 @@
         </p>
       </div>
 
-      <!-- Tarjeta Principal de Historia y Origen -->
       <div class="about-main-card">
         <div class="about-columns">
           <div class="about-text-content">
@@ -179,7 +184,6 @@
             </p>
           </div>
 
-          <!-- Hitos Destacados -->
           <div class="about-milestones">
             <div class="milestone-box">
               <div class="milestone-icon"><i class="fas fa-users-cog"></i></div>
@@ -216,7 +220,6 @@
         </div>
       </div>
 
-      <!-- Cuadrícula de Servicios de la Biblioteca -->
       <div class="about-services-grid">
         <div class="about-service-item">
           <div class="service-icon-wrap tic">
@@ -251,7 +254,6 @@
         </div>
       </div>
 
-      <!-- Barra Informativa de Contacto y Horarios -->
       <div class="library-info-bar">
         <div class="info-item">
           <i class="fas fa-map-marker-alt"></i>

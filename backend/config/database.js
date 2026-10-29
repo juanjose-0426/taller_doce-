@@ -9,7 +9,7 @@ let dbType = 'sqlite';
 let mysqlPool = null;
 let sqliteDb = null;
 
-const SQLITE_FILE = path.join(__dirname, '..', 'database', 'database.sqlite');
+const SQLITE_FILE = process.env.SQLITE_FILE || path.join(__dirname, '..', 'database', 'database.sqlite');
 
 /**
  * Normaliza las consultas SQL para que funcionen limpiamente en MySQL y SQLite.
@@ -68,13 +68,16 @@ async function connectMySQL() {
 }
 
 function connectSQLite() {
-  const dir = path.dirname(SQLITE_FILE);
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir, { recursive: true });
+  const targetFile = process.env.SQLITE_FILE || SQLITE_FILE;
+  if (targetFile !== ':memory:') {
+    const dir = path.dirname(targetFile);
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
   }
 
   return new Promise((resolve, reject) => {
-    sqliteDb = new sqlite3.Database(SQLITE_FILE, (err) => {
+    sqliteDb = new sqlite3.Database(targetFile, (err) => {
       if (err) {
         console.error('❌ [DB] Error al inicializar SQLite:', err.message);
         return reject(err);
@@ -431,8 +434,20 @@ async function seedInitialData() {
   }
 }
 
+async function closeDatabase() {
+  if (mysqlPool) {
+    await mysqlPool.end();
+    mysqlPool = null;
+  }
+  if (sqliteDb) {
+    await new Promise((resolve) => sqliteDb.close(() => resolve()));
+    sqliteDb = null;
+  }
+}
+
 module.exports = {
   initDatabase,
+  closeDatabase,
   query,
   getOne,
   run,

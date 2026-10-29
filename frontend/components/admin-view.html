@@ -1,11 +1,6 @@
-<!-- -----------------------------------------------------------------------
-     VISTA 4: VISTA Y CONSOLA DE SUPER ADMINISTRACIÓN (#adminView)
-     ----------------------------------------------------------------------- -->
-
 <section id="adminView" class="view-section">
   <div class="admin-container">
     
-    <!-- Navegación por Pestañas del Super Admin -->
     <div class="admin-tabs">
       <button class="admin-tab-btn active" data-tab="tab-admin-dashboard">
         <i class="fas fa-chart-pie"></i> Tablero & KPIs
@@ -27,11 +22,7 @@
       </button>
     </div>
 
-
-    <!-- Tab 1: Tablero y Gráficos Estadísticos -->
     <div id="tab-admin-dashboard" class="admin-tab-panel active">
-      
-      <!-- KPIs de Administración -->
       <div class="admin-kpis-grid" style="margin-bottom: 2rem;">
         <div class="kpi-card">
           <div class="kpi-icon blue"><i class="fas fa-desktop"></i></div>
@@ -77,7 +68,6 @@
         </div>
       </div>
 
-      <!-- Gráficos Estadísticos (Chart.js) -->
       <div class="charts-grid">
         <div class="chart-card">
           <div class="chart-header">
@@ -106,11 +96,8 @@
           </div>
         </div>
       </div>
-
     </div>
 
-
-    <!-- Tab 2: Computadores CRUD -->
     <div id="tab-admin-pcs" class="admin-tab-panel">
       <div class="queue-table-container">
         <div class="queue-table-header">
@@ -131,16 +118,12 @@
                 <th>Acciones</th>
               </tr>
             </thead>
-            <tbody id="adminPcTableBody">
-              <!-- Renderizado dinámico -->
-            </tbody>
+            <tbody id="adminPcTableBody"></tbody>
           </table>
         </div>
       </div>
     </div>
 
-
-    <!-- Tab 3: Usuarios y Roles CRUD -->
     <div id="tab-admin-users" class="admin-tab-panel">
       <div class="queue-table-container">
         <div class="queue-table-header" style="flex-wrap: wrap; gap: 1rem;">
@@ -164,16 +147,12 @@
                 <th>Acciones</th>
               </tr>
             </thead>
-            <tbody id="adminUserTableBody">
-              <!-- Renderizado dinámico -->
-            </tbody>
+            <tbody id="adminUserTableBody"></tbody>
           </table>
         </div>
       </div>
     </div>
 
-
-    <!-- Tab 4: Configuración del Sistema -->
     <div id="tab-admin-config" class="admin-tab-panel">
       <div class="queue-table-container" style="max-width: 700px; margin: 0 auto; padding: 2rem;">
         <h3 style="margin-bottom: 1.5rem;"><i class="fas fa-sliders-h" style="color: var(--primary);"></i> Parámetros Operativos del Sistema</h3>
@@ -210,8 +189,6 @@
       </div>
     </div>
 
-
-    <!-- Tab 5: Historial de Auditoría -->
     <div id="tab-admin-audit" class="admin-tab-panel">
       <div class="queue-table-container">
         <div class="queue-table-header">
@@ -230,16 +207,12 @@
                 <th>Descripción</th>
               </tr>
             </thead>
-            <tbody id="adminAuditTableBody">
-              <!-- Renderizado dinámico -->
-            </tbody>
+            <tbody id="adminAuditTableBody"></tbody>
           </table>
         </div>
       </div>
     </div>
 
-
-    <!-- Tab 6: Reportes & Exportación CSV -->
     <div id="tab-admin-reports" class="admin-tab-panel">
       <div class="staff-toolbar" style="margin-bottom: 1.5rem;">
         <div style="display: flex; gap: 1rem; align-items: flex-end; flex-wrap: wrap;">
@@ -266,7 +239,6 @@
         </div>
       </div>
 
-      <!-- Resumen de Métricas del Reporte -->
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
         <div class="kpi-card">
           <div class="kpi-icon blue"><i class="fas fa-list-ol"></i></div>
@@ -304,9 +276,7 @@
                 <th>Estado</th>
               </tr>
             </thead>
-            <tbody id="adminReportsTableBody">
-              <!-- Renderizado dinámico -->
-            </tbody>
+            <tbody id="adminReportsTableBody"></tbody>
           </table>
         </div>
       </div>

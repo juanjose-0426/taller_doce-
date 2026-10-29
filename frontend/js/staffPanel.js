@@ -1,9 +1,5 @@
-/**
- * BIBLIOTIEMPODOCE - PANEL DEL FUNCIONARIO (SALA DE CONTROL)
- * Monitoreo en vivo de computadores, temporizadores regresivos, control de sesiones y gestión de fila
- */
-
 const staffPanel = {
+  initialized: false,
   pcs: [],
   queue: [],
   timerInterval: null,
@@ -12,7 +8,10 @@ const staffPanel = {
     await this.loadPCs();
     await this.loadQueue();
     this.startGlobalTimer();
-    this.setupListeners();
+    if (!this.initialized) {
+      this.setupListeners();
+      this.initialized = true;
+    }
   },
 
   setupListeners() {
@@ -24,13 +23,11 @@ const staffPanel = {
       this.loadQueue();
     });
 
-    // Formulario de inicio de sesión manual para visitante
     const assignModalForm = document.getElementById('staffAssignSessionForm');
     if (assignModalForm) {
       assignModalForm.addEventListener('submit', (e) => this.handleManualAssign(e));
     }
 
-    // Formulario de agregar usuario presencial a la fila
     const addQueueForm = document.getElementById('staffAddQueueForm');
     if (addQueueForm) {
       addQueueForm.addEventListener('submit', (e) => this.handleAddQueueUser(e));
@@ -354,7 +351,6 @@ const staffPanel = {
     const documento = document.getElementById('staffAddQueueDoc').value.trim();
     if (!documento) return;
 
-    // Buscar si el usuario existe, o entrar a la fila
     const res = await window.api.post('/queue/join', { documento });
     if (res.success) {
       window.showToast(res.message, 'success');

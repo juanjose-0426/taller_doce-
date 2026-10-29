@@ -44,7 +44,26 @@ async function getAllPCs(req, res) {
       }
 
       return {
-        ...pc,
+        id: pc.id,
+        nombre: pc.nombre,
+        numero: pc.numero,
+        ubicacion: pc.ubicacion,
+        estado: pc.estado,
+        descripcion: pc.descripcion,
+        especificaciones: pc.descripcion,
+        fecha_registro: pc.fecha_registro,
+        sesion_activa: pc.sesion_id ? {
+          id: pc.sesion_id,
+          fecha_inicio: pc.sesion_fecha_inicio,
+          tiempo_maximo: pc.sesion_tiempo_maximo,
+          estado: pc.sesion_estado,
+          usuario_id: pc.usuario_id,
+          usuario_nombre: pc.usuario_nombre,
+          usuario_documento: pc.usuario_documento,
+          segundosTranscurridos: segundos_transcurridos,
+          segundosRestantes: segundos_restantes,
+          porcentajeUsado: porcentaje_usado
+        } : null,
         segundos_transcurridos,
         segundos_restantes,
         porcentaje_usado

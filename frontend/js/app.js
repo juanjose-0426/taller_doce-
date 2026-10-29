@@ -1,9 +1,3 @@
-/**
- * BIBLIOTIEMPODOCE - APLICACIÓN PRINCIPAL Y ENRUTADOR
- * Biblioteca 12 de Octubre
- */
-
-// Reloj del sistema en tiempo real
 function startSystemClock() {
   const clockEl = document.getElementById('systemClockTime');
   const update = () => {
@@ -16,26 +10,25 @@ function startSystemClock() {
   setInterval(update, 1000);
 }
 
-// Router SPA
 const router = {
   currentView: 'publicView',
 
   navigate(viewName) {
     const user = window.api.getUser();
+    const role = user ? (user.rol_nombre || user.rol) : null;
 
-    // Protección de rutas por rol
     if (viewName === 'userView' && !user) {
       window.showToast('Debes iniciar sesión para acceder a tu panel.', 'warning');
-      window.showModal('loginModal');
+      if (window.auth) window.auth.openPortalLogin('usuario');
       return;
     }
 
-    if (viewName === 'staffView' && (!user || (user.rol !== 'funcionario' && user.rol !== 'superadmin'))) {
+    if (viewName === 'staffView' && (!user || (role !== 'funcionario' && role !== 'superadmin'))) {
       window.showToast('Acceso restringido para personal de la biblioteca.', 'error');
       return;
     }
 
-    if (viewName === 'adminView' && (!user || user.rol !== 'superadmin')) {
+    if (viewName === 'adminView' && (!user || role !== 'superadmin')) {
       window.showToast('Acceso restringido a Super Administradores.', 'error');
       return;
     }
@@ -50,7 +43,11 @@ const router = {
       this.currentView = viewName;
       window.scrollTo({ top: 0, behavior: 'smooth' });
 
-      // Cargar datos de la vista
+      // Asegurar que la interfaz y botones de ingreso estén sincronizados con la sesión
+      if (window.auth) {
+        window.auth.updateUI();
+      }
+
       if (viewName === 'publicView') {
         app.loadPublicPCs();
       } else if (viewName === 'userView' && window.userPanel) {
@@ -64,50 +61,52 @@ const router = {
   },
 
   navigateToRoleDefault(role) {
-    if (role === 'superadmin') {
+    const user = window.api.getUser();
+    const currentRole = role || (user ? (user.rol_nombre || user.rol) : null);
+    if (currentRole === 'superadmin') {
       this.navigate('adminView');
-    } else if (role === 'funcionario') {
+    } else if (currentRole === 'funcionario') {
       this.navigate('staffView');
-    } else {
+    } else if (currentRole === 'usuario') {
       this.navigate('userView');
+    } else {
+      this.navigate('publicView');
     }
   }
 };
 
 window.router = router;
 
-// Lógica general de la aplicación
 const app = {
   async init() {
-    // Cargar componentes HTML modulares de la aplicación
     if (window.componentLoader) {
       await window.componentLoader.loadAll();
     }
 
     startSystemClock();
 
-    // Inicializar Sockets y Audio
     if (window.socketService) {
       window.socketService.init();
     }
 
-    // Inicializar Autenticación
     if (window.auth) {
       window.auth.init();
     }
 
-    // Cargar notificaciones si hay usuario
     this.setupNotifications();
 
-    // Detectar vista inicial
     const user = window.api.getUser();
     if (user) {
-      router.navigateToRoleDefault(user.rol);
+      router.navigateToRoleDefault(user.rol_nombre || user.rol);
     } else {
       router.navigate('publicView');
     }
 
-    // Escuchar actualizaciones de sockets en vista pública
+    // Actualizar estado de portales tras cargar componentes
+    if (window.auth) {
+      window.auth.updateUI();
+    }
+
     window.addEventListener('realtime:pc-updated', () => {
       if (router.currentView === 'publicView') {
         this.loadPublicPCs();
@@ -115,9 +114,6 @@ const app = {
     });
   },
 
-  /* ----------------------------------------------------
-     VISTA PÚBLICA (ESTADO EN VIVO)
-     ---------------------------------------------------- */
   async loadPublicPCs() {
     const res = await window.api.get('/pcs');
     const container = document.getElementById('publicPcGrid');
@@ -185,9 +181,6 @@ const app = {
     }
   },
 
-  /* ----------------------------------------------------
-     DRAWER DE NOTIFICACIONES
-     ---------------------------------------------------- */
   setupNotifications() {
     const toggleBtn = document.getElementById('notificationToggleBtn');
     const closeBtn = document.getElementById('closeNotificationDrawerBtn');
@@ -216,7 +209,6 @@ const app = {
       });
     }
 
-    // Cargar conteo al inicio
     this.refreshNotificationBadge();
   },
 
@@ -266,7 +258,6 @@ const app = {
 
 window.app = app;
 
-// Utilidades globales: Modales y Notificaciones Toast
 window.showModal = function(id) {
   const modal = document.getElementById(id);
   if (modal) modal.classList.add('active');
@@ -308,14 +299,12 @@ window.showToast = function(message, type = 'info') {
   }, 4500);
 };
 
-// Cerrar modales con clic fuera
 document.addEventListener('click', (e) => {
   if (e.target.classList.contains('modal-overlay')) {
     e.target.classList.remove('active');
   }
 });
 
-// Inicialización en DOMContentLoaded
 document.addEventListener('DOMContentLoaded', () => {
   app.init();
 });

@@ -1,9 +1,5 @@
-/**
- * BIBLIOTIEMPODOCE - PANEL DEL SUPER ADMINISTRADOR
- * Gestión integral: KPIs, Gráficos (Chart.js), CRUD de computadores, usuarios y roles, auditoría, configuración y reportes
- */
-
 const adminPanel = {
+  initialized: false,
   charts: {
     demanda: null,
     usoPcs: null,
@@ -11,8 +7,11 @@ const adminPanel = {
   },
 
   async init() {
-    this.setupTabs();
-    this.setupForms();
+    if (!this.initialized) {
+      this.setupTabs();
+      this.setupForms();
+      this.initialized = true;
+    }
     await this.loadKPIs();
     await this.loadCharts();
     await this.loadPCsTable();
@@ -42,40 +41,32 @@ const adminPanel = {
   },
 
   setupForms() {
-    // Formulario de nuevo / editar computador
     const pcForm = document.getElementById('adminPcForm');
     if (pcForm) {
       pcForm.addEventListener('submit', (e) => this.handleSavePC(e));
     }
 
-    // Formulario de nuevo / editar usuario
     const userForm = document.getElementById('adminUserForm');
     if (userForm) {
       userForm.addEventListener('submit', (e) => this.handleSaveUser(e));
     }
 
-    // Formulario de configuración general
     const configForm = document.getElementById('adminConfigForm');
     if (configForm) {
       configForm.addEventListener('submit', (e) => this.handleSaveConfig(e));
     }
 
-    // Filtros de reportes
     const reportFilterBtn = document.getElementById('adminFilterReportsBtn');
     if (reportFilterBtn) {
       reportFilterBtn.addEventListener('click', () => this.loadReports());
     }
 
-    // Exportar CSV
     const exportCsvBtn = document.getElementById('adminExportCsvBtn');
     if (exportCsvBtn) {
       exportCsvBtn.addEventListener('click', () => this.exportReportsCSV());
     }
   },
 
-  /* ----------------------------------------------------
-     KPIs & TABLERO GENERAL
-     ---------------------------------------------------- */
   async loadKPIs() {
     const res = await window.api.get('/admin/kpis');
     if (!res.success) return;
@@ -96,9 +87,6 @@ const adminPanel = {
     setTxt('adminKpiAvgMinutes', `${d.tiempoPromedioMinutos} min`);
   },
 
-  /* ----------------------------------------------------
-     GRÁFICOS ESTADÍSTICOS (CHART.JS)
-     ---------------------------------------------------- */
   async loadCharts() {
     if (typeof Chart === 'undefined') return;
 
@@ -107,7 +95,6 @@ const adminPanel = {
 
     const data = res.data;
 
-    // 1. Gráfico de Horas de Mayor Demanda
     const ctxDemanda = document.getElementById('chartDemandaHoras');
     if (ctxDemanda) {
       if (this.charts.demanda) this.charts.demanda.destroy();
@@ -118,8 +105,8 @@ const adminPanel = {
           datasets: [{
             label: 'Sesiones iniciadas',
             data: data.horariosDemanda.values,
-            backgroundColor: 'rgba(14, 165, 233, 0.7)',
-            borderColor: '#0ea5e9',
+            backgroundColor: 'rgba(3, 105, 161, 0.75)',
+            borderColor: '#0369a1',
             borderWidth: 1,
             borderRadius: 4
           }]
@@ -131,14 +118,13 @@ const adminPanel = {
             legend: { display: false }
           },
           scales: {
-            y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' } },
+            y: { beginAtZero: true, grid: { color: 'rgba(15, 23, 42, 0.08)' } },
             x: { grid: { display: false } }
           }
         }
       });
     }
 
-    // 2. Gráfico de Computadores Más Utilizados
     const ctxPcs = document.getElementById('chartUsoPcs');
     if (ctxPcs) {
       if (this.charts.usoPcs) this.charts.usoPcs.destroy();
@@ -152,8 +138,8 @@ const adminPanel = {
           datasets: [{
             label: 'Total de sesiones',
             data: values.length > 0 ? values : [0],
-            backgroundColor: 'rgba(99, 102, 241, 0.7)',
-            borderColor: '#6366f1',
+            backgroundColor: 'rgba(13, 148, 136, 0.75)',
+            borderColor: '#0d9488',
             borderWidth: 1,
             borderRadius: 4
           }]
@@ -166,14 +152,13 @@ const adminPanel = {
             legend: { display: false }
           },
           scales: {
-            x: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' } },
+            x: { beginAtZero: true, grid: { color: 'rgba(15, 23, 42, 0.08)' } },
             y: { grid: { display: false } }
           }
         }
       });
     }
 
-    // 3. Gráfico de Sesiones en los Últimos 7 Días
     const ctxSemanal = document.getElementById('chartUsoSemanal');
     if (ctxSemanal) {
       if (this.charts.semanal) this.charts.semanal.destroy();
@@ -187,11 +172,11 @@ const adminPanel = {
           datasets: [{
             label: 'Sesiones por día',
             data: values.length > 0 ? values : [0],
-            borderColor: '#10b981',
-            backgroundColor: 'rgba(16, 185, 129, 0.15)',
+            borderColor: '#059669',
+            backgroundColor: 'rgba(5, 150, 105, 0.15)',
             tension: 0.3,
             fill: true,
-            pointBackgroundColor: '#10b981'
+            pointBackgroundColor: '#059669'
           }]
         },
         options: {
@@ -201,7 +186,7 @@ const adminPanel = {
             legend: { display: false }
           },
           scales: {
-            y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' } },
+            y: { beginAtZero: true, grid: { color: 'rgba(15, 23, 42, 0.08)' } },
             x: { grid: { display: false } }
           }
         }
@@ -209,9 +194,6 @@ const adminPanel = {
     }
   },
 
-  /* ----------------------------------------------------
-     GESTIÓN DE COMPUTADORES (CRUD)
-     ---------------------------------------------------- */
   async loadPCsTable() {
     const res = await window.api.get('/pcs');
     const tbody = document.getElementById('adminPcTableBody');
@@ -305,9 +287,6 @@ const adminPanel = {
     }
   },
 
-  /* ----------------------------------------------------
-     GESTIÓN DE USUARIOS Y ROLES (CRUD)
-     ---------------------------------------------------- */
   async loadUsersTable() {
     const busqueda = document.getElementById('adminUserSearch') ? document.getElementById('adminUserSearch').value.trim() : '';
     const res = await window.api.get(`/admin/users?busqueda=${encodeURIComponent(busqueda)}`);
@@ -419,9 +398,6 @@ const adminPanel = {
     }
   },
 
-  /* ----------------------------------------------------
-     CONFIGURACIÓN DEL SISTEMA
-     ---------------------------------------------------- */
   async loadConfig() {
     const res = await window.api.get('/admin/config');
     if (res.success) {
@@ -459,9 +435,6 @@ const adminPanel = {
     }
   },
 
-  /* ----------------------------------------------------
-     HISTORIAL DE AUDITORÍA
-     ---------------------------------------------------- */
   async loadAuditLogs() {
     const res = await window.api.get('/admin/audit-logs?limit=50');
     const tbody = document.getElementById('adminAuditTableBody');
@@ -484,9 +457,6 @@ const adminPanel = {
     }
   },
 
-  /* ----------------------------------------------------
-     REPORTES Y EXPORTACIÓN A CSV
-     ---------------------------------------------------- */
   currentReportData: [],
 
   async loadReports() {
@@ -504,7 +474,6 @@ const adminPanel = {
     if (res.success) {
       this.currentReportData = res.data;
 
-      // Actualizar resumen de métricas
       const setTxt = (id, val) => {
         const el = document.getElementById(id);
         if (el) el.textContent = val;

@@ -1,11 +1,6 @@
-<!-- -----------------------------------------------------------------------
-     VISTA 3: VISTA Y PANEL DE FUNCIONARIOS DE SALA (#staffView)
-     ----------------------------------------------------------------------- -->
-
 <section id="staffView" class="view-section">
   <div class="staff-container">
     
-    <!-- Barra de métricas y controles rápidos -->
     <div class="staff-toolbar">
       <div class="staff-metrics">
         <div class="staff-metric-item">
@@ -36,18 +31,14 @@
       </div>
     </div>
 
-    <!-- Matriz de Computadores con Temporizadores Regresivos -->
     <div>
       <div class="pc-grid-header">
         <h3><i class="fas fa-desktop" style="color: var(--primary);"></i> Supervisión de Equipos en Sala</h3>
         <span style="font-size: 0.82rem; color: var(--text-muted);">Actualización en vivo cada segundo</span>
       </div>
-      <div class="pc-grid" id="staffPcGrid">
-        <!-- Renderizado dinámico -->
-      </div>
+      <div class="pc-grid" id="staffPcGrid"></div>
     </div>
 
-    <!-- Gestión de Fila de Espera Digital -->
     <div class="queue-table-container">
       <div class="queue-table-header">
         <h4><i class="fas fa-users" style="color: var(--status-warning);"></i> Fila de Espera Digital Activa</h4>
@@ -64,9 +55,7 @@
               <th>Acciones</th>
             </tr>
           </thead>
-          <tbody id="staffQueueTableBody">
-            <!-- Renderizado dinámico -->
-          </tbody>
+          <tbody id="staffQueueTableBody"></tbody>
         </table>
       </div>
     </div>

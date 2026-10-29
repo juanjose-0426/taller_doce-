@@ -25,13 +25,17 @@ function initSockets(io) {
   });
 
   // Monitor en segundo plano para control y expiración automática de sesiones
-  setInterval(async () => {
+  const monitorInterval = setInterval(async () => {
     try {
       await checkActiveSessions(io);
     } catch (err) {
       console.error('Error en monitor de sesiones:', err.message);
     }
   }, 10000); // Evaluar cada 10 segundos
+
+  if (monitorInterval.unref) {
+    monitorInterval.unref();
+  }
 }
 
 // Registro en memoria de alertas emitidas para no duplicarlas por sesión

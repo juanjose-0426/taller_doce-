@@ -73,6 +73,7 @@ async function register(req, res) {
         correo: correo.trim().toLowerCase(),
         rol_id: 3,
         rol_nombre: 'usuario',
+        rol: 'usuario',
         estado: 'activo'
       }
     });
@@ -170,6 +171,7 @@ async function login(req, res) {
         correo: user.correo,
         rol_id: user.rol_id,
         rol_nombre: user.rol_nombre,
+        rol: user.rol_nombre,
         estado: user.estado
       }
     });

@@ -1,8 +1,3 @@
-/**
- * BIBLIOTIEMPODOCE - CARGADOR MODULAR DE COMPONENTES HTML
- * Biblioteca 12 de Octubre
- */
-
 window.componentLoader = {
   async loadAll() {
     const components = [
