@@ -16,37 +16,45 @@
         <i class="fas fa-clock"></i>
         <span id="systemClockTime">00:00:00</span>
       </div>
-      <div id="navLinks" style="display: flex; gap: 0.5rem;"></div>
+      <div id="navLinks" class="nav-links-group"></div>
     </div>
 
     <div class="header-actions">
-      <button class="btn-icon" id="notificationToggleBtn" title="Notificaciones">
-        <i class="fas fa-bell"></i>
-        <span id="navNotificationBadge" style="display: none; position: absolute; top: -4px; right: -4px; background: var(--status-ocupado); color: #fff; font-size: 0.65rem; font-weight: bold; width: 18px; height: 18px; border-radius: 50%; align-items: center; justify-content: center;">0</span>
+      <button type="button" class="btn-icon" id="fontScaleToggleBtn" title="Aumentar / Restaurar tamaño de letra (Accesibilidad)" aria-label="Aumentar o restaurar tamaño de letra">
+        <span class="font-scale-label">A+</span>
       </button>
 
-      <div id="authActions" style="display: flex; gap: 0.4rem; align-items: center;">
-        <button class="btn btn-secondary btn-sm" onclick="window.auth.openPortalLogin('usuario')" title="Ingreso para usuarios de la comunidad">
-          <i class="fas fa-user" style="color: var(--status-disponible);"></i> Usuario
+      <button type="button" class="btn-icon" id="themeToggleBtn" title="Cambiar entre Tema Claro y Oscuro" aria-label="Cambiar entre Tema Claro y Oscuro">
+        <i class="fas fa-moon" id="themeToggleIcon"></i>
+      </button>
+
+      <button type="button" class="btn-icon" id="notificationToggleBtn" title="Notificaciones" aria-label="Notificaciones">
+        <i class="fas fa-bell"></i>
+        <span id="navNotificationBadge" class="nav-notif-badge">0</span>
+      </button>
+
+      <div id="authActions" class="auth-actions-group">
+        <button type="button" class="btn btn-secondary btn-sm" onclick="window.auth.openPortalLogin('usuario')" title="Ingreso para usuarios de la comunidad">
+          <i class="fas fa-user icon-success"></i> Usuario
         </button>
-        <button class="btn btn-secondary btn-sm" onclick="window.auth.openPortalLogin('funcionario')" title="Ingreso para personal de la biblioteca">
-          <i class="fas fa-user-tie" style="color: var(--status-warning);"></i> Funcionario
+        <button type="button" class="btn btn-secondary btn-sm" onclick="window.auth.openPortalLogin('funcionario')" title="Ingreso para personal de la biblioteca">
+          <i class="fas fa-user-tie icon-warning"></i> Funcionario
         </button>
-        <button class="btn btn-secondary btn-sm" onclick="window.auth.openPortalLogin('superadmin')" title="Ingreso exclusivo para administración general">
-          <i class="fas fa-shield-alt" style="color: #a78bfa;"></i> Super Admin
+        <button type="button" class="btn btn-secondary btn-sm" onclick="window.auth.openPortalLogin('superadmin')" title="Ingreso exclusivo para administración general">
+          <i class="fas fa-shield-alt icon-purple"></i> Super Admin
         </button>
-        <button class="btn btn-primary btn-sm" onclick="window.showModal('registerModal')" title="Crear cuenta nueva de usuario">
+        <button type="button" class="btn btn-primary btn-sm" onclick="window.showModal('registerModal')" title="Crear cuenta nueva de usuario">
           <i class="fas fa-user-plus"></i> Registro
         </button>
       </div>
 
-      <div id="userProfileMenu" style="display: none; align-items: center; gap: 0.75rem;">
-        <div style="display: flex; flex-direction: column; align-items: flex-end; line-height: 1.2;">
-          <span id="navUserName" style="font-size: 0.88rem; font-weight: 700;">Usuario</span>
-          <span id="navUserRole" class="status-badge disponible" style="font-size: 0.65rem; padding: 0.1rem 0.4rem;">ROL</span>
+      <div id="userProfileMenu" class="user-profile-menu">
+        <div class="user-profile-info">
+          <span id="navUserName" class="nav-user-name">Usuario</span>
+          <span id="navUserRole" class="status-badge disponible nav-user-role">ROL</span>
         </div>
-        <button class="btn btn-secondary btn-sm" id="logoutBtn" title="Cerrar sesión">
-          <i class="fas fa-power-off" style="color: var(--status-ocupado);"></i>
+        <button type="button" class="btn btn-secondary btn-sm" id="logoutBtn" title="Cerrar sesión" aria-label="Cerrar sesión">
+          <i class="fas fa-power-off icon-danger"></i>
         </button>
       </div>
     </div>

@@ -1,13 +1,13 @@
 <aside class="notification-drawer" id="notificationDrawer">
   <div class="drawer-header">
-    <h4 style="display: flex; align-items: center; gap: 0.5rem;">
-      <i class="fas fa-bell" style="color: var(--primary);"></i> Notificaciones
+    <h4 class="drawer-title">
+      <i class="fas fa-bell icon-primary"></i> Notificaciones
     </h4>
-    <div style="display: flex; gap: 0.5rem; align-items: center;">
-      <button class="btn btn-secondary btn-sm" id="markAllNotificationsReadBtn" title="Marcar todas como leídas">
+    <div class="flex-row-sm">
+      <button type="button" class="btn btn-secondary btn-sm" id="markAllNotificationsReadBtn" title="Marcar todas como leídas" aria-label="Marcar todas como leídas">
         <i class="fas fa-check-double"></i>
       </button>
-      <button class="btn-icon" id="closeNotificationDrawerBtn">
+      <button type="button" class="btn-icon" id="closeNotificationDrawerBtn" title="Cerrar notificaciones" aria-label="Cerrar notificaciones">
         <i class="fas fa-times"></i>
       </button>
     </div>

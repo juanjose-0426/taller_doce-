@@ -8,6 +8,7 @@ router.get('/my-active', authenticateToken, sessionController.getMyActiveSession
 router.get('/my-history', authenticateToken, sessionController.getMyHistory);
 router.post('/start', authenticateToken, sessionController.startSession);
 router.post('/:id/end', authenticateToken, sessionController.endSession);
+router.post('/:id/help', authenticateToken, sessionController.requestSessionHelp);
 
 // Vistas y controles de Funcionario y Super Admin
 router.get('/active', authenticateToken, requireRole(['funcionario', 'superadmin']), sessionController.getAllActiveSessions);

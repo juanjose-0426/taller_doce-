@@ -15,7 +15,7 @@
 
     <div class="portals-section" id="publicPortalsSection">
       <div class="portals-section-header">
-        <h2><i class="fas fa-door-open" style="color: var(--primary);"></i> Portales de Ingreso</h2>
+        <h2><i class="fas fa-door-open icon-primary"></i> Portales de Ingreso</h2>
         <p>Selecciona la puerta de acceso que corresponde a tu rol en la biblioteca.</p>
       </div>
 
@@ -36,10 +36,10 @@
           </div>
 
           <div class="portal-actions">
-            <button class="btn btn-success" onclick="window.auth.openPortalLogin('usuario')">
+            <button type="button" class="btn btn-success" onclick="window.auth.openPortalLogin('usuario')">
               <i class="fas fa-sign-in-alt"></i> Ingresar como Usuario
             </button>
-            <button class="btn btn-secondary btn-sm" onclick="window.showModal('registerModal')">
+            <button type="button" class="btn btn-secondary btn-sm" onclick="window.showModal('registerModal')">
               <i class="fas fa-user-plus"></i> Registrarme como Usuario Nuevo
             </button>
           </div>
@@ -60,7 +60,7 @@
           </div>
 
           <div class="portal-actions">
-            <button class="btn btn-warning" onclick="window.auth.openPortalLogin('funcionario')">
+            <button type="button" class="btn btn-warning" onclick="window.auth.openPortalLogin('funcionario')">
               <i class="fas fa-tasks"></i> Ingresar a Sala de Control
             </button>
           </div>
@@ -81,7 +81,7 @@
           </div>
 
           <div class="portal-actions">
-            <button class="btn btn-primary" onclick="window.auth.openPortalLogin('superadmin')" style="background: linear-gradient(135deg, #8b5cf6, #6366f1); border-color: #8b5cf6;">
+            <button type="button" class="btn btn-primary btn-admin-gradient" onclick="window.auth.openPortalLogin('superadmin')">
               <i class="fas fa-lock"></i> Consola Super Administrador
             </button>
           </div>
@@ -91,30 +91,30 @@
     </div>
 
     <!-- Banner cuando ya ha iniciado sesión -->
-    <div id="publicLoggedInBanner" style="display: none; background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.5rem 2rem; margin-top: 1.5rem; box-shadow: var(--shadow-sm);">
-      <div style="display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap;">
-        <div style="display: flex; align-items: center; gap: 1.25rem;">
-          <div style="width: 52px; height: 52px; border-radius: 50%; background: var(--primary-light); border: 2px solid var(--primary); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: var(--primary);">
+    <div id="publicLoggedInBanner" class="public-logged-banner">
+      <div class="public-logged-inner">
+        <div class="public-logged-user">
+          <div class="public-logged-avatar">
             <i class="fas fa-user-check"></i>
           </div>
           <div>
-            <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px;">Sesión Activa en el Sistema</div>
-            <h3 style="margin: 0.2rem 0; font-size: 1.25rem; color: var(--text-primary);" id="publicLoggedInUserName">Usuario</h3>
-            <span class="status-badge disponible" id="publicLoggedInUserRole" style="font-size: 0.72rem;">ROL</span>
+            <div class="public-logged-caption">Sesión Activa en el Sistema</div>
+            <h3 class="public-logged-title" id="publicLoggedInUserName">Usuario</h3>
+            <span class="status-badge disponible public-logged-badge" id="publicLoggedInUserRole">ROL</span>
           </div>
         </div>
-        <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
-          <button class="btn btn-primary" id="publicGoToPanelBtn">
+        <div class="flex-row-wrap">
+          <button type="button" class="btn btn-primary" id="publicGoToPanelBtn">
             <i class="fas fa-tachometer-alt"></i> Ir a Mi Panel
           </button>
-          <button class="btn btn-secondary" onclick="window.auth.logout()">
-            <i class="fas fa-power-off" style="color: var(--status-ocupado);"></i> Cerrar Sesión
+          <button type="button" class="btn btn-secondary" onclick="window.auth.logout()">
+            <i class="fas fa-power-off icon-danger"></i> Cerrar Sesión
           </button>
         </div>
       </div>
     </div>
 
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; margin-top: 2rem;">
+    <div class="public-summary-grid">
       <div class="kpi-card">
         <div class="kpi-icon emerald"><i class="fas fa-check-circle"></i></div>
         <div class="kpi-data">
@@ -138,10 +138,10 @@
       </div>
     </div>
 
-    <div style="margin-top: 2.5rem;">
+    <div class="mt-xl">
       <div class="pc-grid-header">
         <h2 class="pc-grid-title">
-          <i class="fas fa-network-wired" style="color: var(--primary);"></i>
+          <i class="fas fa-network-wired icon-primary"></i>
           Estado de la Sala en Tiempo Real
         </h2>
         <div class="pc-legend">
@@ -152,8 +152,82 @@
         </div>
       </div>
 
+      <div class="pc-filter-bar" id="publicPcFilterBar">
+        <button type="button" class="filter-pill active" data-filter="todos" onclick="window.app.setPublicFilter('todos')">
+          <i class="fas fa-th-large"></i> Todos (12)
+        </button>
+        <button type="button" class="filter-pill" data-filter="disponible" onclick="window.app.setPublicFilter('disponible')">
+          <i class="fas fa-check-circle"></i> Solo Disponibles
+        </button>
+        <button type="button" class="filter-pill" data-filter="Sala Principal" onclick="window.app.setPublicFilter('Sala Principal')">
+          <i class="fas fa-desktop"></i> Sala Principal
+        </button>
+        <button type="button" class="filter-pill" data-filter="Sala Tecnológica" onclick="window.app.setPublicFilter('Sala Tecnológica')">
+          <i class="fas fa-laptop-code"></i> Sala Tecnológica (Diseño / Código)
+        </button>
+        <button type="button" class="filter-pill" data-filter="Sala Infantil / Juvenil" onclick="window.app.setPublicFilter('Sala Infantil / Juvenil')">
+          <i class="fas fa-child"></i> Sala Infantil / Juvenil
+        </button>
+      </div>
+
       <div class="pc-grid" id="publicPcGrid"></div>
     </div>
+
+    <!-- Cartelera de Talleres y Actividades Gratuitas -->
+    <section class="workshops-section">
+      <div class="pc-grid-header">
+        <div>
+          <h2 class="pc-grid-title">
+            <i class="fas fa-calendar-check icon-secondary"></i>
+            Cartelera de Talleres y Cursos Gratuitos
+          </h2>
+          <p class="section-subdesc">
+            Inscríbete sin costo en las actividades formativas de esta semana en la Biblioteca 12 de Octubre.
+          </p>
+        </div>
+      </div>
+
+      <div class="workshops-grid">
+        <div class="workshop-card">
+          <div class="workshop-badge emerald"><i class="fas fa-user-friends"></i> Adultos Mayores</div>
+          <h3>Alfabetización Digital y Trámites en Línea</h3>
+          <p>Aprende desde cero a usar el computador, correo electrónico, citas médicas por internet y herramientas digitales seguras.</p>
+          <div class="workshop-meta">
+            <span><i class="fas fa-clock"></i> Martes y Jueves &bull; 9:00 a.m. - 11:00 a.m.</span>
+            <span><i class="fas fa-map-pin"></i> Sala Principal</span>
+          </div>
+          <button type="button" class="btn btn-primary btn-sm w-full mt-sm" onclick="window.app.registerWorkshop('Alfabetización Digital y Trámites en Línea', 'Martes y Jueves 9:00 a.m.')">
+            <i class="fas fa-hand-point-up"></i> Inscribirme Gratis
+          </button>
+        </div>
+
+        <div class="workshop-card">
+          <div class="workshop-badge blue"><i class="fas fa-code"></i> Jóvenes y Comunidad</div>
+          <h3>Introducción a Programación Web y Ofimática</h3>
+          <p>Taller práctico de creación de páginas web con HTML/CSS/JS, hojas de cálculo en Excel y presentación de proyectos.</p>
+          <div class="workshop-meta">
+            <span><i class="fas fa-clock"></i> Miércoles y Viernes &bull; 3:00 p.m. - 5:00 p.m.</span>
+            <span><i class="fas fa-map-pin"></i> Sala Tecnológica</span>
+          </div>
+          <button type="button" class="btn btn-primary btn-sm w-full mt-sm" onclick="window.app.registerWorkshop('Introducción a Programación Web y Ofimática', 'Miércoles y Viernes 3:00 p.m.')">
+            <i class="fas fa-hand-point-up"></i> Inscribirme Gratis
+          </button>
+        </div>
+
+        <div class="workshop-card">
+          <div class="workshop-badge amber"><i class="fas fa-book-reader"></i> Niños y Familias</div>
+          <h3>Club de Lectura y Cuentos Interactivos</h3>
+          <p>Espacio de lectura en voz alta, exploración de enciclopedias digitales y juegos educativos para despertar la creatividad.</p>
+          <div class="workshop-meta">
+            <span><i class="fas fa-clock"></i> Sábados &bull; 10:00 a.m. - 12:00 m.</span>
+            <span><i class="fas fa-map-pin"></i> Sala Infantil / Juvenil</span>
+          </div>
+          <button type="button" class="btn btn-primary btn-sm w-full mt-sm" onclick="window.app.registerWorkshop('Club de Lectura y Cuentos Interactivos', 'Sábados 10:00 a.m.')">
+            <i class="fas fa-hand-point-up"></i> Inscribirme Gratis
+          </button>
+        </div>
+      </div>
+    </section>
 
     <section class="library-about-section">
       <div class="about-header">
@@ -169,7 +243,7 @@
       <div class="about-main-card">
         <div class="about-columns">
           <div class="about-text-content">
-            <h3><i class="fas fa-landmark" style="color: var(--primary);"></i> Origen e Historia de Nuestra Biblioteca</h3>
+            <h3><i class="fas fa-landmark icon-primary"></i> Origen e Historia de Nuestra Biblioteca</h3>
             <p>
               La <strong>Biblioteca Pública 12 de Octubre</strong> nació como fruto de la organización social, la perseverancia y el compromiso de los líderes comunitarios de la <strong>Comuna 6 (Doce de Octubre)</strong> de Medellín durante las décadas de 1980 y 1990. En medio de los desafíos históricos del sector, las familias y vecinos soñaron con un lugar de paz, lectura y superación donde los niños y jóvenes pudieran forjar un futuro mejor.
             </p>

@@ -183,9 +183,15 @@ const userPanel = {
             </div>
           ` : ''}
 
-          <div style="margin-top: 1rem;">
-            <button class="btn btn-danger" onclick="userPanel.confirmEndSession(${s.id})">
-              <i class="fas fa-sign-out-alt"></i> Finalizar Mi Sesión Voluntariamente
+          <div style="margin-top: 1rem; display: flex; flex-wrap: wrap; gap: 0.65rem;">
+            <button class="btn btn-primary btn-sm" onclick="userPanel.requestHelp(${s.id}, 'prorroga')">
+              <i class="fas fa-hourglass-half"></i> Solicitar +15 min al Funcionario
+            </button>
+            <button class="btn btn-secondary btn-sm" onclick="userPanel.requestHelp(${s.id}, 'asistencia')">
+              <i class="fas fa-hand-paper" style="color: var(--status-warning);"></i> Levantar la Mano (Ayuda Técnica)
+            </button>
+            <button class="btn btn-danger btn-sm" onclick="userPanel.confirmEndSession(${s.id})">
+              <i class="fas fa-sign-out-alt"></i> Finalizar Mi Sesión
             </button>
           </div>
         </div>
@@ -364,6 +370,21 @@ const userPanel = {
       this.renderQueueState();
     } else {
       window.showToast(res.message || 'Error al salir de la lista.', 'error');
+    }
+  },
+
+  async requestHelp(sessionId, tipo) {
+    let detalle = '';
+    if (tipo === 'asistencia') {
+      detalle = prompt('Describe brevemente qué ayuda necesitas (ej. Impresión, problemas con internet, audífonos):', 'Apoyo técnico en el equipo');
+      if (detalle === null) return;
+    }
+
+    const res = await window.api.post(`/sessions/${sessionId}/help`, { tipo, detalle });
+    if (res.success) {
+      window.showToast(res.message, 'success');
+    } else {
+      window.showToast(res.message || 'No se pudo enviar la solicitud.', 'error');
     }
   }
 };

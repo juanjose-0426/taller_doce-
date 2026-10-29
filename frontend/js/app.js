@@ -78,12 +78,16 @@ const router = {
 window.router = router;
 
 const app = {
+  publicFilter: 'todos',
+  cachedPublicPcs: [],
+
   async init() {
     if (window.componentLoader) {
       await window.componentLoader.loadAll();
     }
 
     startSystemClock();
+    this.setupThemeAndAccessibility();
 
     if (window.socketService) {
       window.socketService.init();
@@ -120,65 +124,143 @@ const app = {
     if (!container) return;
 
     if (res.success && res.data.length > 0) {
-      const pcs = res.data;
-      const disponibles = pcs.filter(p => p.estado === 'disponible').length;
-      const ocupados = pcs.filter(p => p.estado === 'ocupado' || p.estado === 'proximo_terminar').length;
-
-      const elDisp = document.getElementById('publicCountDisp');
-      const elOcup = document.getElementById('publicCountOcup');
-      if (elDisp) elDisp.textContent = disponibles;
-      if (elOcup) elOcup.textContent = ocupados;
-
-      container.innerHTML = pcs.map(pc => {
-        let borderClass = 'border-disponible';
-        let badgeClass = 'disponible';
-        let badgeText = 'Disponible';
-
-        if (pc.estado === 'ocupado') {
-          borderClass = 'border-ocupado';
-          badgeClass = 'ocupado';
-          badgeText = 'En Uso';
-        } else if (pc.estado === 'proximo_terminar') {
-          borderClass = 'border-warning';
-          badgeClass = 'proximo_terminar';
-          badgeText = 'Por Terminar';
-        } else if (pc.estado === 'fuera_servicio') {
-          borderClass = 'border-mantenimiento';
-          badgeClass = 'fuera_servicio';
-          badgeText = 'Mantenimiento';
-        }
-
-        return `
-          <div class="pc-card ${borderClass}">
-            <div class="pc-card-header">
-              <div class="pc-id-group">
-                <div class="pc-icon"><i class="fas fa-desktop"></i></div>
-                <div>
-                  <div class="pc-name">${pc.nombre}</div>
-                  <div class="pc-location">${pc.ubicacion}</div>
-                </div>
-              </div>
-              <span class="status-badge ${badgeClass}">${badgeText}</span>
-            </div>
-
-            <div class="pc-card-body">
-              <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.5rem;">
-                ${pc.especificaciones || 'Equipo de consulta bibliográfica'}
-              </p>
-              ${pc.sesion_activa ? `
-                <div style="font-size: 0.75rem; color: var(--text-muted); display: flex; align-items: center; gap: 0.35rem;">
-                  <i class="fas fa-clock"></i> Sesión activa en curso
-                </div>
-              ` : `
-                <div style="font-size: 0.75rem; color: var(--status-disponible); display: flex; align-items: center; gap: 0.35rem;">
-                  <i class="fas fa-check-circle"></i> Listo para usar
-                </div>
-              `}
-            </div>
-          </div>
-        `;
-      }).join('');
+      this.cachedPublicPcs = res.data;
+      this.renderFilteredPublicPCs();
     }
+  },
+
+  setPublicFilter(filterValue) {
+    this.publicFilter = filterValue;
+    document.querySelectorAll('#publicPcFilterBar .filter-pill').forEach(btn => {
+      btn.classList.toggle('active', btn.getAttribute('data-filter') === filterValue);
+    });
+    this.renderFilteredPublicPCs();
+  },
+
+  renderFilteredPublicPCs() {
+    const container = document.getElementById('publicPcGrid');
+    if (!container) return;
+
+    const pcs = this.cachedPublicPcs || [];
+    const disponibles = pcs.filter(p => p.estado === 'disponible').length;
+    const ocupados = pcs.filter(p => p.estado === 'ocupado' || p.estado === 'proximo_terminar').length;
+
+    const elDisp = document.getElementById('publicCountDisp');
+    const elOcup = document.getElementById('publicCountOcup');
+    if (elDisp) elDisp.textContent = disponibles;
+    if (elOcup) elOcup.textContent = ocupados;
+
+    const filtered = pcs.filter(pc => {
+      if (this.publicFilter === 'todos') return true;
+      if (this.publicFilter === 'disponible') return pc.estado === 'disponible';
+      return pc.ubicacion === this.publicFilter;
+    });
+
+    if (filtered.length === 0) {
+      container.innerHTML = `
+        <div style="grid-column: 1 / -1; text-align: center; padding: 2rem; background: var(--bg-card); border: 1px dashed var(--border-color); border-radius: var(--radius-lg); color: var(--text-secondary);">
+          No hay computadores que coincidan con el filtro seleccionado.
+        </div>
+      `;
+      return;
+    }
+
+    container.innerHTML = filtered.map(pc => {
+      let borderClass = 'border-disponible';
+      let badgeClass = 'disponible';
+      let badgeText = 'Disponible';
+
+      if (pc.estado === 'ocupado') {
+        borderClass = 'border-ocupado';
+        badgeClass = 'ocupado';
+        badgeText = 'En Uso';
+      } else if (pc.estado === 'proximo_terminar') {
+        borderClass = 'border-warning';
+        badgeClass = 'proximo_terminar';
+        badgeText = 'Por Terminar';
+      } else if (pc.estado === 'fuera_servicio') {
+        borderClass = 'border-mantenimiento';
+        badgeClass = 'fuera_servicio';
+        badgeText = 'Mantenimiento';
+      }
+
+      return `
+        <div class="pc-card ${borderClass}">
+          <div class="pc-card-header">
+            <div class="pc-id-group">
+              <div class="pc-icon"><i class="fas fa-desktop"></i></div>
+              <div>
+                <div class="pc-name">${pc.nombre}</div>
+                <div class="pc-location">${pc.ubicacion}</div>
+              </div>
+            </div>
+            <span class="status-badge ${badgeClass}">${badgeText}</span>
+          </div>
+
+          <div class="pc-card-body">
+            <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.5rem;">
+              ${pc.especificaciones || 'Equipo de consulta bibliográfica'}
+            </p>
+            ${pc.sesion_activa ? `
+              <div style="font-size: 0.75rem; color: var(--text-muted); display: flex; align-items: center; gap: 0.35rem;">
+                <i class="fas fa-clock"></i> Sesión activa en curso
+              </div>
+            ` : `
+              <div style="font-size: 0.75rem; color: var(--status-disponible); display: flex; align-items: center; gap: 0.35rem;">
+                <i class="fas fa-check-circle"></i> Listo para usar
+              </div>
+            `}
+          </div>
+        </div>
+      `;
+    }).join('');
+  },
+
+  setupThemeAndAccessibility() {
+    const savedTheme = localStorage.getItem('biblio_theme') || 'light';
+    const savedFont = localStorage.getItem('biblio_font_large') === 'true';
+
+    this.applyTheme(savedTheme);
+    if (savedFont) {
+      document.documentElement.classList.add('font-large');
+    }
+
+    const themeBtn = document.getElementById('themeToggleBtn');
+    if (themeBtn) {
+      themeBtn.addEventListener('click', () => {
+        const current = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+        const next = current === 'dark' ? 'light' : 'dark';
+        this.applyTheme(next);
+        localStorage.setItem('biblio_theme', next);
+        window.showToast(next === 'dark' ? 'Tema Oscuro activado' : 'Tema Claro Institucional activado', 'info');
+      });
+    }
+
+    const fontBtn = document.getElementById('fontScaleToggleBtn');
+    if (fontBtn) {
+      fontBtn.addEventListener('click', () => {
+        const isLarge = document.documentElement.classList.toggle('font-large');
+        localStorage.setItem('biblio_font_large', isLarge ? 'true' : 'false');
+        window.showToast(isLarge ? 'Tamaño de lectura ampliado (A+)' : 'Tamaño de lectura estándar restaurado', 'info');
+      });
+    }
+  },
+
+  applyTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    const icon = document.getElementById('themeToggleIcon');
+    if (icon) {
+      icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+    }
+  },
+
+  registerWorkshop(titulo, horario) {
+    const user = window.api.getUser();
+    const nombreDefault = user ? user.nombre_completo : '';
+    const nombre = prompt(`Inscripción gratuita al taller: "${titulo}" (${horario}).\n\nPor favor confirma tu nombre completo:`, nombreDefault);
+    if (!nombre || !nombre.trim()) return;
+
+    window.showToast(`¡Inscripción confirmada para ${nombre.trim()} en "${titulo}" (${horario})!`, 'success');
   },
 
   setupNotifications() {

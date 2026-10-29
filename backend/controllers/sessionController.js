@@ -174,6 +174,8 @@ async function getMyActiveSession(req, res) {
       hasActiveSession: true,
       session: {
         ...session,
+        pc_nombre: session.computador_nombre,
+        pc_ubicacion: session.computador_ubicacion,
         segundosTranscurridos,
         segundosRestantes,
         porcentajeUsado,
@@ -346,9 +348,9 @@ async function endSession(req, res) {
 async function extendSession(req, res) {
   try {
     const { id } = req.params;
-    const { minutosAdicionales } = req.body;
+    const { minutosAdicionales, minutos } = req.body;
 
-    const mins = parseInt(minutosAdicionales || 15, 10);
+    const mins = parseInt(minutosAdicionales || minutos || 15, 10);
     if (mins <= 0 || isNaN(mins)) {
       return res.status(400).json({ success: false, message: 'Indique una cantidad de minutos válida a agregar.' });
     }
@@ -405,7 +407,9 @@ async function getMyHistory(req, res) {
     const userId = req.user.id;
     const history = await query(
       `SELECT s.id, s.fecha_inicio, s.fecha_fin, s.tiempo_maximo, s.tiempo_utilizado, s.estado,
-              c.nombre AS computador_nombre, c.numero AS computador_numero, c.ubicacion AS computador_ubicacion
+              c.nombre AS computador_nombre, c.nombre AS pc_nombre,
+              c.numero AS computador_numero,
+              c.ubicacion AS computador_ubicacion, c.ubicacion AS pc_ubicacion
        FROM sesiones s
        JOIN computadores c ON s.computador_id = c.id
        WHERE s.usuario_id = ?
@@ -488,12 +492,92 @@ async function reorderQueue() {
   }
 }
 
+/**
+ * Solicitar prórroga de tiempo o asistencia técnica al funcionario ("Levantar la mano")
+ */
+async function requestSessionHelp(req, res) {
+  try {
+    const { id } = req.params;
+    const { tipo, detalle } = req.body; // tipo: 'prorroga' | 'asistencia'
+    const userId = req.user.id;
+
+    const session = await getOne(
+      `SELECT s.id, s.usuario_id, s.computador_id, c.nombre AS pc_nombre, c.ubicacion AS pc_ubicacion,
+              u.nombre_completo AS usuario_nombre
+       FROM sesiones s
+       JOIN computadores c ON s.computador_id = c.id
+       JOIN usuarios u ON s.usuario_id = u.id
+       WHERE s.id = ? AND s.estado IN ('activa', 'proxima_finalizar')`,
+      [id]
+    );
+
+    if (!session) {
+      return res.status(404).json({ success: false, message: 'Sesión activa no encontrada.' });
+    }
+
+    if (req.user.rol_nombre === 'usuario' && session.usuario_id !== userId) {
+      return res.status(403).json({ success: false, message: 'No puedes enviar solicitudes para otra sesión.' });
+    }
+
+    const requestType = tipo === 'prorroga' ? 'prorroga' : 'asistencia';
+    const titulo = requestType === 'prorroga'
+      ? `Solicitud de +15 min en ${session.pc_nombre}`
+      : `Asistencia técnica en ${session.pc_nombre}`;
+    const mensaje = detalle
+      ? `${session.usuario_nombre} (${session.pc_nombre}): ${detalle}`
+      : requestType === 'prorroga'
+        ? `El usuario ${session.usuario_nombre} solicita 15 minutos adicionales en ${session.pc_nombre}.`
+        : `El usuario ${session.usuario_nombre} levantó la mano solicitando apoyo técnico en ${session.pc_nombre}.`;
+
+    await logAudit(
+      userId,
+      requestType === 'prorroga' ? 'SOLICITUD_PRORROGA' : 'SOLICITUD_ASISTENCIA',
+      mensaje
+    );
+
+    // Notificar a funcionarios y superadmins activos
+    const staffUsers = await query("SELECT id FROM usuarios WHERE rol_id IN (1, 2) AND estado = 'activo'");
+    for (const staff of staffUsers) {
+      await run(
+        'INSERT INTO notificaciones (usuario_id, titulo, mensaje) VALUES (?, ?, ?)',
+        [staff.id, titulo, mensaje]
+      );
+    }
+
+    const io = req.app.get('io');
+    if (io) {
+      io.emit('session:help_requested', {
+        sessionId: session.id,
+        pcId: session.computador_id,
+        pcName: session.pc_nombre,
+        pcLocation: session.pc_ubicacion,
+        userName: session.usuario_nombre,
+        tipo: requestType,
+        titulo,
+        mensaje,
+        fecha: new Date().toISOString()
+      });
+    }
+
+    return res.json({
+      success: true,
+      message: requestType === 'prorroga'
+        ? 'Solicitud de +15 minutos enviada al funcionario de sala.'
+        : 'Solicitud de asistencia enviada. Un funcionario se acercará a tu equipo.'
+    });
+  } catch (err) {
+    console.error('Error en requestSessionHelp:', err);
+    return res.status(500).json({ success: false, message: 'Error al enviar solicitud al funcionario.' });
+  }
+}
+
 module.exports = {
   startSession,
   getMyActiveSession,
   getAllActiveSessions,
   endSession,
   extendSession,
+  requestSessionHelp,
   getMyHistory,
   getAllHistory,
   reorderQueue

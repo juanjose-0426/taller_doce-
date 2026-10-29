@@ -2,11 +2,13 @@ const staffPanel = {
   initialized: false,
   pcs: [],
   queue: [],
+  helpRequests: [],
   timerInterval: null,
 
   async init() {
     await this.loadPCs();
     await this.loadQueue();
+    this.renderHelpRequests();
     this.startGlobalTimer();
     if (!this.initialized) {
       this.setupListeners();
@@ -21,6 +23,16 @@ const staffPanel = {
 
     window.addEventListener('realtime:queue-updated', () => {
       this.loadQueue();
+    });
+
+    window.addEventListener('realtime:help-requested', (e) => {
+      if (e.detail) {
+        this.helpRequests.unshift({
+          ...e.detail,
+          reqId: Date.now() + Math.random()
+        });
+        this.renderHelpRequests();
+      }
     });
 
     const assignModalForm = document.getElementById('staffAssignSessionForm');
@@ -372,6 +384,58 @@ const staffPanel = {
     } else {
       window.showToast(res.message || 'Error al remover de la fila.', 'error');
     }
+  },
+
+  renderHelpRequests() {
+    const container = document.getElementById('staffHelpRequestsContainer');
+    if (!container) return;
+
+    if (this.helpRequests.length === 0) {
+      container.style.display = 'none';
+      container.innerHTML = '';
+      return;
+    }
+
+    container.style.display = 'block';
+    container.innerHTML = `
+      <div class="help-requests-banner">
+        <div class="help-requests-header">
+          <h4><i class="fas fa-hand-paper"></i> Solicitudes de Usuarios en Sala (${this.helpRequests.length})</h4>
+        </div>
+        <div class="help-requests-list">
+          ${this.helpRequests.map((req, idx) => `
+            <div class="help-request-item">
+              <div>
+                <strong>${req.pcName} (${req.pcLocation}) — ${req.userName}</strong>
+                <div style="font-size: 0.82rem; color: var(--text-secondary);">${req.mensaje}</div>
+              </div>
+              <div style="display: flex; gap: 0.5rem;">
+                ${req.tipo === 'prorroga' ? `
+                  <button class="btn btn-success btn-sm" onclick="staffPanel.approveHelpExtension(${req.sessionId}, ${idx})">
+                    <i class="fas fa-check"></i> Conceder +15m
+                  </button>
+                ` : ''}
+                <button class="btn btn-secondary btn-sm" onclick="staffPanel.dismissHelpRequest(${idx})">
+                  <i class="fas fa-check-double"></i> Atendido
+                </button>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  },
+
+  async approveHelpExtension(sessionId, index) {
+    await this.extendSession(sessionId, 15);
+    this.helpRequests.splice(index, 1);
+    this.renderHelpRequests();
+  },
+
+  dismissHelpRequest(index) {
+    this.helpRequests.splice(index, 1);
+    this.renderHelpRequests();
+    window.showToast('Solicitud marcada como atendida.', 'info');
   }
 };
 

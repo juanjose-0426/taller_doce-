@@ -4,44 +4,46 @@
     <div class="staff-toolbar">
       <div class="staff-metrics">
         <div class="staff-metric-item">
-          <span style="color: var(--text-muted); font-size: 0.85rem;">Total Equipos:</span>
+          <span class="text-muted-sm">Total Equipos:</span>
           <span class="staff-metric-count" id="staffMetricTotal">--</span>
         </div>
         <div class="staff-metric-item">
-          <span style="color: var(--status-disponible); font-size: 0.85rem;">Disponibles:</span>
-          <span class="staff-metric-count" style="color: var(--status-disponible);" id="staffMetricDisp">--</span>
+          <span class="staff-metric-label icon-success">Disponibles:</span>
+          <span class="staff-metric-count icon-success" id="staffMetricDisp">--</span>
         </div>
         <div class="staff-metric-item">
-          <span style="color: var(--status-ocupado); font-size: 0.85rem;">Ocupados:</span>
-          <span class="staff-metric-count" style="color: var(--status-ocupado);" id="staffMetricOcup">--</span>
+          <span class="staff-metric-label icon-danger">Ocupados:</span>
+          <span class="staff-metric-count icon-danger" id="staffMetricOcup">--</span>
         </div>
         <div class="staff-metric-item">
-          <span style="color: var(--status-warning); font-size: 0.85rem;">En Espera:</span>
-          <span class="staff-metric-count" style="color: var(--status-warning);" id="staffMetricCola">--</span>
+          <span class="staff-metric-label icon-warning">En Espera:</span>
+          <span class="staff-metric-count icon-warning" id="staffMetricCola">--</span>
         </div>
       </div>
 
-      <div style="display: flex; gap: 0.5rem;">
-        <button class="btn btn-secondary btn-sm" onclick="window.showModal('staffAddQueueModal')">
+      <div class="flex-row-sm">
+        <button type="button" class="btn btn-secondary btn-sm" onclick="window.showModal('staffAddQueueModal')">
           <i class="fas fa-user-plus"></i> Agregar Visitante a Fila
         </button>
-        <button class="btn btn-primary btn-sm" onclick="staffPanel.loadPCs()">
+        <button type="button" class="btn btn-primary btn-sm" onclick="staffPanel.loadPCs()">
           <i class="fas fa-sync-alt"></i> Actualizar
         </button>
       </div>
     </div>
 
+    <div id="staffHelpRequestsContainer" class="is-hidden"></div>
+
     <div>
       <div class="pc-grid-header">
-        <h3><i class="fas fa-desktop" style="color: var(--primary);"></i> Supervisión de Equipos en Sala</h3>
-        <span style="font-size: 0.82rem; color: var(--text-muted);">Actualización en vivo cada segundo</span>
+        <h3><i class="fas fa-desktop icon-primary"></i> Supervisión de Equipos en Sala</h3>
+        <span class="text-muted-sm">Actualización en vivo cada segundo</span>
       </div>
       <div class="pc-grid" id="staffPcGrid"></div>
     </div>
 
     <div class="queue-table-container">
       <div class="queue-table-header">
-        <h4><i class="fas fa-users" style="color: var(--status-warning);"></i> Fila de Espera Digital Activa</h4>
+        <h4><i class="fas fa-users icon-warning"></i> Fila de Espera Digital Activa</h4>
         <span class="status-badge warning" id="staffQueueBadge">0 en espera</span>
       </div>
       <div class="table-responsive">

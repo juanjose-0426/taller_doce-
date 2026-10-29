@@ -308,6 +308,15 @@ describe('BiblioTiempoDoce - Suite de Pruebas Automatizadas del Backend', () => 
       assert.equal(data.session.computador_id, 1);
     });
 
+    it('debe permitir al usuario solicitar prórroga o asistencia técnica al funcionario', async () => {
+      const { status, data } = await apiRequest('POST', `/api/sessions/${activeSessionId}/help`, {
+        token: userToken,
+        body: { tipo: 'prorroga' }
+      });
+      assert.equal(status, 200);
+      assert.equal(data.success, true);
+    });
+
     it('debe permitir al funcionario extender el tiempo de una sesión activa', async () => {
       const { status, data } = await apiRequest('POST', `/api/sessions/${activeSessionId}/extend`, {
         token: staffToken,

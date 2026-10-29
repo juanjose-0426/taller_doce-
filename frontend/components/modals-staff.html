@@ -2,18 +2,18 @@
   <div class="modal-card staff-portal">
     <div class="modal-header">
       <h3 id="staffAssignModalTitle">Asignar Sesión en Computador</h3>
-      <button class="btn-icon" onclick="window.hideModal('staffAssignModal')"><i class="fas fa-times"></i></button>
+      <button type="button" class="btn-icon" title="Cerrar ventana" aria-label="Cerrar ventana" onclick="window.hideModal('staffAssignModal')"><i class="fas fa-times"></i></button>
     </div>
     <form id="staffAssignSessionForm">
       <input type="hidden" id="staffAssignPcId">
       <div class="modal-body">
         <div class="form-group">
-          <label>Documento del Usuario:</label>
+          <label for="staffAssignUserDoc">Documento del Usuario:</label>
           <input type="text" id="staffAssignUserDoc" placeholder="Documento del visitante" required>
-          <span style="font-size: 0.75rem; color: var(--text-muted);">Si el usuario no está registrado, se le creará un acceso temporal automáticamente.</span>
+          <span class="text-hint">Si el usuario no está registrado, se le creará un acceso temporal automáticamente.</span>
         </div>
         <div class="form-group">
-          <label>Tiempo de Uso Autorizado (minutos):</label>
+          <label for="staffAssignTime">Tiempo de Uso Autorizado (minutos):</label>
           <select id="staffAssignTime">
             <option value="60" selected>60 minutos (Estándar)</option>
             <option value="30">30 minutos (Rápido)</option>
@@ -34,12 +34,12 @@
   <div class="modal-card staff-portal">
     <div class="modal-header">
       <h3>Agregar Visitante a Fila de Espera</h3>
-      <button class="btn-icon" onclick="window.hideModal('staffAddQueueModal')"><i class="fas fa-times"></i></button>
+      <button type="button" class="btn-icon" title="Cerrar ventana" aria-label="Cerrar ventana" onclick="window.hideModal('staffAddQueueModal')"><i class="fas fa-times"></i></button>
     </div>
     <form id="staffAddQueueForm">
       <div class="modal-body">
         <div class="form-group">
-          <label>Documento de Identidad:</label>
+          <label for="staffAddQueueDoc">Documento de Identidad:</label>
           <input type="text" id="staffAddQueueDoc" placeholder="Número de documento" required>
         </div>
       </div>

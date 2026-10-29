@@ -105,3 +105,4 @@ El sistema crea automáticamente usuarios de demostración al iniciar por primer
 - `POST /api/sessions/start` | `POST /api/sessions/:id/extend` | `POST /api/sessions/:id/end` — Control de sesiones.
 - `POST /api/queue/join` | `POST /api/queue/leave` | `POST /api/queue/assign` — Lista de espera digital.
 - `GET /api/admin/kpis` | `GET /api/admin/statistics` | `GET /api/admin/audit-logs` | `GET /api/admin/reports` — Administración y analítica.
+

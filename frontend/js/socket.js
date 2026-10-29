@@ -60,6 +60,16 @@ class SocketService {
       window.showToast('La configuración del sistema fue actualizada.', 'info');
       window.dispatchEvent(new CustomEvent('realtime:config-updated', { detail: data }));
     });
+
+    this.socket.on('session:help_requested', (data) => {
+      const user = window.api.getUser();
+      const role = user ? (user.rol_nombre || user.rol) : null;
+      if (user && (role === 'funcionario' || role === 'superadmin')) {
+        this.playChime('warning');
+        window.showToast(`✋ ${data.titulo}: ${data.userName}`, 'warning');
+        window.dispatchEvent(new CustomEvent('realtime:help-requested', { detail: data }));
+      }
+    });
   }
 
   joinUserRoom(userId) {

@@ -2,28 +2,28 @@
   <div class="admin-container">
     
     <div class="admin-tabs">
-      <button class="admin-tab-btn active" data-tab="tab-admin-dashboard">
-        <i class="fas fa-chart-pie"></i> Tablero & KPIs
+      <button type="button" class="admin-tab-btn active" data-tab="tab-admin-dashboard">
+        <i class="fas fa-chart-pie"></i> Tablero &amp; KPIs
       </button>
-      <button class="admin-tab-btn" data-tab="tab-admin-pcs">
+      <button type="button" class="admin-tab-btn" data-tab="tab-admin-pcs">
         <i class="fas fa-desktop"></i> Computadores (CRUD)
       </button>
-      <button class="admin-tab-btn" data-tab="tab-admin-users">
+      <button type="button" class="admin-tab-btn" data-tab="tab-admin-users">
         <i class="fas fa-user-shield"></i> Usuarios y Roles
       </button>
-      <button class="admin-tab-btn" data-tab="tab-admin-config">
+      <button type="button" class="admin-tab-btn" data-tab="tab-admin-config">
         <i class="fas fa-sliders-h"></i> Configuración
       </button>
-      <button class="admin-tab-btn" data-tab="tab-admin-audit">
+      <button type="button" class="admin-tab-btn" data-tab="tab-admin-audit">
         <i class="fas fa-shield-virus"></i> Auditoría
       </button>
-      <button class="admin-tab-btn" data-tab="tab-admin-reports">
-        <i class="fas fa-file-export"></i> Reportes & Métricas
+      <button type="button" class="admin-tab-btn" data-tab="tab-admin-reports">
+        <i class="fas fa-file-export"></i> Reportes &amp; Métricas
       </button>
     </div>
 
     <div id="tab-admin-dashboard" class="admin-tab-panel active">
-      <div class="admin-kpis-grid" style="margin-bottom: 2rem;">
+      <div class="admin-kpis-grid mb-xl">
         <div class="kpi-card">
           <div class="kpi-icon blue"><i class="fas fa-desktop"></i></div>
           <div class="kpi-data">
@@ -71,7 +71,7 @@
       <div class="charts-grid">
         <div class="chart-card">
           <div class="chart-header">
-            <h4><i class="fas fa-chart-bar" style="color: var(--primary);"></i> Demanda por Horas del Día</h4>
+            <h4><i class="fas fa-chart-bar icon-primary"></i> Demanda por Horas del Día</h4>
           </div>
           <div class="chart-wrapper">
             <canvas id="chartDemandaHoras"></canvas>
@@ -80,16 +80,16 @@
 
         <div class="chart-card">
           <div class="chart-header">
-            <h4><i class="fas fa-chart-pie" style="color: var(--accent);"></i> Equipos Más Utilizados</h4>
+            <h4><i class="fas fa-chart-pie icon-accent"></i> Equipos Más Utilizados</h4>
           </div>
           <div class="chart-wrapper">
             <canvas id="chartUsoPcs"></canvas>
           </div>
         </div>
 
-        <div class="chart-card" style="grid-column: 1 / -1;">
+        <div class="chart-card chart-card-full">
           <div class="chart-header">
-            <h4><i class="fas fa-chart-line" style="color: var(--status-disponible);"></i> Evolución de Sesiones (Últimos 7 Días)</h4>
+            <h4><i class="fas fa-chart-line icon-success"></i> Evolución de Sesiones (Últimos 7 Días)</h4>
           </div>
           <div class="chart-wrapper">
             <canvas id="chartUsoSemanal"></canvas>
@@ -102,7 +102,7 @@
       <div class="queue-table-container">
         <div class="queue-table-header">
           <h4>Gestión de Equipos Tecnológicos</h4>
-          <button class="btn btn-primary btn-sm" onclick="adminPanel.openNewPCModal()">
+          <button type="button" class="btn btn-primary btn-sm" onclick="adminPanel.openNewPCModal()">
             <i class="fas fa-plus"></i> Nuevo Computador
           </button>
         </div>
@@ -126,12 +126,12 @@
 
     <div id="tab-admin-users" class="admin-tab-panel">
       <div class="queue-table-container">
-        <div class="queue-table-header" style="flex-wrap: wrap; gap: 1rem;">
+        <div class="queue-table-header flex-row-wrap">
           <h4>Directorio de Usuarios y Personal</h4>
-          <div style="display: flex; gap: 0.5rem; flex: 1; max-width: 400px;">
-            <input type="text" id="adminUserSearch" placeholder="Buscar por documento, nombre..." onkeyup="adminPanel.loadUsersTable()">
+          <div class="admin-search-box">
+            <input type="text" id="adminUserSearch" aria-label="Buscar usuarios por documento o nombre" placeholder="Buscar por documento, nombre..." onkeyup="adminPanel.loadUsersTable()">
           </div>
-          <button class="btn btn-primary btn-sm" onclick="adminPanel.openNewUserModal()">
+          <button type="button" class="btn btn-primary btn-sm" onclick="adminPanel.openNewUserModal()">
             <i class="fas fa-user-plus"></i> Crear Usuario
           </button>
         </div>
@@ -154,35 +154,35 @@
     </div>
 
     <div id="tab-admin-config" class="admin-tab-panel">
-      <div class="queue-table-container" style="max-width: 700px; margin: 0 auto; padding: 2rem;">
-        <h3 style="margin-bottom: 1.5rem;"><i class="fas fa-sliders-h" style="color: var(--primary);"></i> Parámetros Operativos del Sistema</h3>
-        <form id="adminConfigForm" style="display: flex; flex-direction: column; gap: 1.25rem;">
+      <div class="queue-table-container admin-config-card">
+        <h3 class="mb-lg"><i class="fas fa-sliders-h icon-primary"></i> Parámetros Operativos del Sistema</h3>
+        <form id="adminConfigForm" class="admin-config-form">
           <div class="form-group">
-            <label>Tiempo Máximo por Sesión (minutos):</label>
+            <label for="configTiempoMaximo">Tiempo Máximo por Sesión (minutos):</label>
             <input type="number" id="configTiempoMaximo" min="15" max="180" required>
-            <span style="font-size: 0.75rem; color: var(--text-muted);">Duración límite estándar asignada a cada usuario.</span>
+            <span class="text-hint">Duración límite estándar asignada a cada usuario.</span>
           </div>
 
           <div class="form-group">
-            <label>Tiempo de Advertencia / Alerta Previa (minutos):</label>
+            <label for="configTiempoAlerta">Tiempo de Advertencia / Alerta Previa (minutos):</label>
             <input type="number" id="configTiempoAlerta" min="5" max="30" required>
-            <span style="font-size: 0.75rem; color: var(--text-muted);">Minutos antes de expirar en los cuales se activan las alertas sonoras y visuales.</span>
+            <span class="text-hint">Minutos antes de expirar en los cuales se activan las alertas sonoras y visuales.</span>
           </div>
 
           <div class="form-group">
-            <label>Reglas de la Lista de Espera:</label>
+            <label for="configReglasEspera">Reglas de la Lista de Espera:</label>
             <textarea id="configReglasEspera" rows="3"></textarea>
           </div>
 
           <div class="form-group">
-            <label>Acción al Agotarse el Tiempo:</label>
+            <label for="configAccionFin">Acción al Agotarse el Tiempo:</label>
             <select id="configAccionFin">
               <option value="finalizar_automatica">Finalizar automáticamente y liberar equipo</option>
               <option value="alertar_funcionario">Notificar al personal de sala para cierre manual</option>
             </select>
           </div>
 
-          <button type="submit" class="btn btn-primary" style="margin-top: 1rem;">
+          <button type="submit" class="btn btn-primary mt-md">
             <i class="fas fa-save"></i> Guardar Cambios de Configuración
           </button>
         </form>
@@ -192,8 +192,8 @@
     <div id="tab-admin-audit" class="admin-tab-panel">
       <div class="queue-table-container">
         <div class="queue-table-header">
-          <h4><i class="fas fa-shield-alt" style="color: var(--primary);"></i> Registro de Auditoría y Acciones</h4>
-          <button class="btn btn-secondary btn-sm" onclick="adminPanel.loadAuditLogs()">
+          <h4><i class="fas fa-shield-alt icon-primary"></i> Registro de Auditoría y Acciones</h4>
+          <button type="button" class="btn btn-secondary btn-sm" onclick="adminPanel.loadAuditLogs()">
             <i class="fas fa-sync"></i> Refrescar
           </button>
         </div>
@@ -214,32 +214,32 @@
     </div>
 
     <div id="tab-admin-reports" class="admin-tab-panel">
-      <div class="staff-toolbar" style="margin-bottom: 1.5rem;">
-        <div style="display: flex; gap: 1rem; align-items: flex-end; flex-wrap: wrap;">
+      <div class="staff-toolbar mb-lg">
+        <div class="report-filters-row">
           <div class="form-group">
-            <label style="font-size: 0.75rem;">Desde:</label>
-            <input type="date" id="reportFechaInicio" style="padding: 0.4rem 0.6rem;">
+            <label for="reportFechaInicio" class="text-hint">Desde:</label>
+            <input type="date" id="reportFechaInicio" class="input-compact">
           </div>
           <div class="form-group">
-            <label style="font-size: 0.75rem;">Hasta:</label>
-            <input type="date" id="reportFechaFin" style="padding: 0.4rem 0.6rem;">
+            <label for="reportFechaFin" class="text-hint">Hasta:</label>
+            <input type="date" id="reportFechaFin" class="input-compact">
           </div>
-          <button class="btn btn-primary btn-sm" id="adminFilterReportsBtn">
+          <button type="button" class="btn btn-primary btn-sm" id="adminFilterReportsBtn">
             <i class="fas fa-filter"></i> Filtrar
           </button>
         </div>
 
-        <div style="display: flex; gap: 0.5rem;">
-          <button class="btn btn-success btn-sm" id="adminExportCsvBtn">
+        <div class="flex-row-sm">
+          <button type="button" class="btn btn-success btn-sm" id="adminExportCsvBtn">
             <i class="fas fa-file-csv"></i> Descargar en CSV
           </button>
-          <button class="btn btn-secondary btn-sm" onclick="window.print()">
+          <button type="button" class="btn btn-secondary btn-sm" onclick="window.print()">
             <i class="fas fa-print"></i> Imprimir
           </button>
         </div>
       </div>
 
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+      <div class="report-kpis-grid">
         <div class="kpi-card">
           <div class="kpi-icon blue"><i class="fas fa-list-ol"></i></div>
           <div class="kpi-data">
